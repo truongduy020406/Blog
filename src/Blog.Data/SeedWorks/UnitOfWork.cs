@@ -18,9 +18,13 @@ namespace Blog.Data.SeedWorks
         {
             _context = context;
             Posts = new PostRepository(context,mapper);
+            Tags = new TagRepository(context, mapper);
+
         }
 
         public IPostRepository Posts {  get; private set; }
+
+        public ITagRepository Tags { get; private set; }
 
         public Task<int> CompleteAsync()
         {

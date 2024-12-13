@@ -9,6 +9,7 @@ namespace Blog.Data
         public async Task SeedAsync(BlogContext context)
         {
             var passwordHasher = new PasswordHasher<AppUser>();
+
             var rootAdminRoleId = Guid.NewGuid();
             if (!context.Roles.Any())
             {
@@ -20,8 +21,6 @@ namespace Blog.Data
                     DisplayName = "Quản trị viên"
                 });
                 await context.SaveChangesAsync();
-
-
             }
 
             if (!context.Users.Any())
@@ -30,19 +29,19 @@ namespace Blog.Data
                 var user = new AppUser()
                 {
                     Id = userId,
-                    FirstName = "Duy",
-                    LastName = "vo",
-                    Email = "admin@gmail.com",
-                    NormalizedEmail = "ADMIN@GMAIL.COM",
+                    FirstName = "Toan",
+                    LastName = "Vo",
+                    Email = "admin@gmail.com.vn",
+                    NormalizedEmail = "ADMIN@GMAIL.COM.VN",
                     UserName = "admin",
-                    NormalizedUserName = "admin",
+                    NormalizedUserName = "ADMIN",
                     IsActive = true,
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    LockoutEnabled = true,
-                    DateCreated = DateTime.Now,
+                    LockoutEnabled = false,
+                    DateCreated = DateTime.Now
                 };
-                user.PasswordHash = passwordHasher.HashPassword(user, "admin123");
-                await context.AddAsync(user);
+                user.PasswordHash = passwordHasher.HashPassword(user, "Admin@123$");
+                await context.Users.AddAsync(user);
 
                 await context.UserRoles.AddAsync(new IdentityUserRole<Guid>()
                 {
@@ -51,25 +50,6 @@ namespace Blog.Data
                 });
                 await context.SaveChangesAsync();
             }
-
-
-            //if (!context.Tags.Any())
-            //{
-            //    var userId = Guid.NewGuid();
-
-            //    await context.Tags.AddAsync(new Tag()
-            //    {
-            //        Id = userId,
-            //        Name = " 123",
-            //        Slug = "456"
-
-            //    });
-            //    await context.SaveChangesAsync();
-            //}
-
-
-        }
-
-       
+        }    
     }
 }

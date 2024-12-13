@@ -1,15 +1,22 @@
 using Blog.Api;
+using Blog.Api.Authorization;
+using Blog.Api.Fillters;
+using Blog.Api.Services;
+using Blog.Core.ConfigOption;
 using Blog.Core.Domain.Identity;
 using Blog.Core.Model.Content;
-using Blog.Core.Repository;
 using Blog.Core.SeedWorks;
 using Blog.Data;
 using Blog.Data.Repositorys;
 using Blog.Data.SeedWorks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 
 
 
@@ -17,7 +24,8 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 //Config DB Context and ASP.NET Core Identity
 builder.Services.AddDbContext<BlogContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -66,7 +74,17 @@ foreach (var service in services)
 }
 
 
+
+
 builder.Services.AddAutoMapper(typeof(PostInListDto));
+
+//Authen and Author 
+builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
+builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+
 
 //Default config for ASP.NET Core
 builder.Services.AddControllers();
@@ -84,6 +102,26 @@ builder.Services.AddSwaggerGen(c =>
         Title = "API for Administrators",
         Description = "API for CMS core domain. This domain keeps track of campaigns, campaign rules, and campaign execution."
     });
+    c.ParameterFilter<SwaggerNullableParameterFilter>();
+});
+
+
+
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+
+    cfg.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = configuration["JwtTokenSettings:Issuer"],
+        ValidAudience = configuration["JwtTokenSettings:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtTokenSettings:Key"]))
+    };
 });
 
 var app = builder.Build();
@@ -99,9 +137,11 @@ if (app.Environment.IsDevelopment())
         c.DisplayRequestDuration();
     });
 }
-
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
+    .WithOrigins("http://localhost:4200", "https://localhost:4200"));
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

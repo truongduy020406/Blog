@@ -1,11 +1,7 @@
 ﻿using Blog.Core.SeedWorks;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Blog.Data.SeedWorks
 {
@@ -35,7 +31,7 @@ namespace Blog.Data.SeedWorks
             return await _dbSet.ToListAsync();
         }
         public async Task<T> GetByIdAsync(Key id)
-        {
+        {   
             return await _dbSet.FindAsync(id);
         }
         public void Remove(T entity)

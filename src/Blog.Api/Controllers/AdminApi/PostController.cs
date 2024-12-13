@@ -6,11 +6,13 @@ using Blog.Core.SeedWorks;
 using Blog.Data.SeedWorks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.Api.Controllers.AdminApi
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostController : ControllerBase
     {
         private readonly IUnitofWork _unitOfWork;

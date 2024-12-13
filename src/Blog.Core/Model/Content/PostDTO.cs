@@ -27,7 +27,7 @@ namespace Blog.Core.Model.Content
         public double RoyaltyAmount { get; set; }
         public PostStatus Status { get; set; }
 
-        public class AutoMapperProfiles : Profile
+        public new class  AutoMapperProfiles : Profile
         {
             public AutoMapperProfiles()
             {
