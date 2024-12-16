@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import { loginModel } from '../Model/login.model'
 import { Observable } from 'rxjs';
-import { AuthenticatedResult } from '../../../Shared/Model/token.model';
+import { AuthenticatedResult } from '../../../shared/Model/token.model';
 export const ADMIN_API_BASE_URL = new InjectionToken<string>('ADMIN_API_BASE_URL');
 
 @Injectable({

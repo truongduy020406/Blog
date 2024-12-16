@@ -122,4 +122,18 @@ export class RoleService {
         return this.http.put(url_, body)
     }
 
+    getAllRoles(): Observable<RoleDto[]> {
+        let url_ = this.baseUrl + "/api/admin/role/all";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.get<RoleDto[]>( url_)
+    }
 }

@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AlertService } from '../Service/alert.service'
+import { AlertService } from '../service/alert.service';
 
 @Injectable()
 export class GlobalHttpInterceptorService implements HttpInterceptor {

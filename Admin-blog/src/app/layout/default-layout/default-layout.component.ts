@@ -17,8 +17,8 @@ import {
 
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { navItems } from './_nav';
-import { TokenStorageService } from 'src/app/Shared/Service/token.service';
-import { UrlConstants } from 'src/app/Shared/constants/Url.onstants';
+import { TokenStorageService } from '../../shared/service/token.service';
+import { UrlConstants } from '../../shared/constants/Url.onstants';
 import { CommonModule } from '@angular/common';
 
 function isOverflown(element: HTMLElement) {

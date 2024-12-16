@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { UsersComponent } from './users/users.component';
+import { UserComponent } from './users/users.component';
 import { RoleComponent } from './role/role.component';
-import { AuthGuard } from 'src/app/shared/auth.guard';
+import { AuthGuard } from '../../Shared/auth.guard';
 
 export const routes: Routes = [
   {
@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: 'users',
-    component: UsersComponent,
+    component: UserComponent,
     data: {
       title: 'Người dùng',
       requiredPolicy: 'Permissions.Users.View',

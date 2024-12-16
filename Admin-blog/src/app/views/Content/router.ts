@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { PostsComponent } from './posts/posts.component'
-import { AuthGuard } from 'src/app/shared/auth.guard';
+import { AuthGuard } from '../../Shared/auth.guard';
 export const routes: Routes = [
   {
     path: '',

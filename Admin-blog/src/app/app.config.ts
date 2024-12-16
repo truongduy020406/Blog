@@ -13,12 +13,12 @@ import { DropdownModule, SidebarModule } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
-import { AlertService } from 'src/app/Shared/Service/alert.service';
+import { AlertService } from './shared/service/alert.service';
 import { MessageService } from 'primeng/api';
-import { TokenStorageService } from 'src/app/Shared/Service/token.service'
+import { TokenStorageService } from './shared/service/token.service'
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ADMIN_API_BASE_URL } from './views/Auth/Service/auth.service';
-import { AuthGuard } from './shared/auth.guard';
+import { AuthGuard } from './Shared/auth.guard';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { GlobalHttpInterceptorService } from './shared/interceptors/error-handle.interceptor';
 import { ConfirmationService } from 'primeng/api';

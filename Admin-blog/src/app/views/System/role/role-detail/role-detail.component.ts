@@ -8,12 +8,12 @@ import {
 } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { UtilityService } from 'src/app/Shared/Service/utility.service';
+import { UtilityService } from '../../../../Shared/Service/utility.service';
 import { RoleDto } from '../../Model/RoleDto.model';
 import { RoleService } from '../../Services/role.service';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ValidationMessageComponent} from 'src/app/Shared/modules/validation-message/validation-message.component';
+import { ValidationMessageComponent} from '../../../../Shared/modules/validation-message/validation-message.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { PanelModule } from 'primeng/panel';
 @Component({

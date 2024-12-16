@@ -1,4 +1,4 @@
 export class TokenRequest {
-    accessToken?: string | undefined;
-    refreshToken?: string | undefined;
+    accessToken?: string ;
+    refreshToken?: string ;
 }

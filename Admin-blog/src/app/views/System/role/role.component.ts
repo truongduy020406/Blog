@@ -13,8 +13,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { AlertService } from 'src/app/Shared/Service/alert.service';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants'
+import { AlertService } from '../../../shared/service/alert.service';
+import { MessageConstants } from '../../../Shared/constants/Message.constants'
 import { DialogService, DynamicDialogComponent } from 'primeng/dynamicdialog';
 import { RoleDetailComponent } from './role-detail/role-detail.component'
 import { ConfirmationService } from 'primeng/api';

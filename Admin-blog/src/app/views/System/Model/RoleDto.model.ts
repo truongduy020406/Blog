@@ -1,5 +1,5 @@
 export class RoleDto {
     id?: string;
-    name?: string | undefined;
-    displayName?: string | undefined;
+    name?: string ;
+    displayName?: string ;
 }

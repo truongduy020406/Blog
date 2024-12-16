@@ -7,6 +7,6 @@ export class RoleDtoPagedResult {
     rowCount?: number;
     readonly firstRowOnPage?: number;
     readonly lastRowOnPage?: number;
-    additionalData?: string | undefined;
-    results?: RoleDto[] | undefined;
+    additionalData?: string ;
+    results?: RoleDto[] ;
 }

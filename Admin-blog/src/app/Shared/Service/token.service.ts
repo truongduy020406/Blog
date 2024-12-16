@@ -1,16 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { UserModel } from '../Model/user.model';
-
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient } from '@angular/common/http';
 import { TokenRequest } from '../Model/TokenRequest.model';
 import { AuthenticatedResult } from '../Model/token.model';
-import { ADMIN_API_BASE_URL } from 'src/app/views/Auth/Service/auth.service';
+import { ADMIN_API_BASE_URL } from '../../views/Auth/Service/auth.service';
 
 const TOKEN_KEY = 'auth-token';
 const REFRESHTOKEN_KEY = 'auth-refreshtoken';
 const USER_KEY = 'auth-user';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -66,7 +65,7 @@ export class TokenStorageService {
   }
 
 
-  refresh(body?: TokenRequest | undefined): Observable<AuthenticatedResult> {
+  refresh(body?: TokenRequest ): Observable<AuthenticatedResult> {
     let url_ = this.baseUrl + "/api/admin/token/refresh";
     url_ = url_.replace(/[?&]$/, "");
     return this.http.post<AuthenticatedResult>(url_, body)

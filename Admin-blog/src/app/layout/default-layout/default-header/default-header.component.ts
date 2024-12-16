@@ -27,8 +27,8 @@ import {
 } from '@coreui/angular';
 
 import { IconDirective } from '@coreui/icons-angular';
-import { TokenStorageService } from 'src/app/Shared/Service/token.service';
-import { UrlConstants } from 'src/app/Shared/constants/Url.onstants'
+import { TokenStorageService } from '../../../shared/service/token.service';
+import { UrlConstants } from '../../../shared/constants/Url.onstants'
 
 @Component({
   selector: 'app-default-header',
