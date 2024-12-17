@@ -22,7 +22,7 @@ import { PermissionGrantComponent } from './permission-grant/permission-grant.co
 @Component({
   selector: 'app-role',
   standalone: true,
-  imports: [ CommonModule,
+  imports: [CommonModule,
     ReactiveFormsModule,
     TableModule,
     ProgressSpinnerModule,
@@ -31,9 +31,7 @@ import { PermissionGrantComponent } from './permission-grant/permission-grant.co
     PanelModule,
     CheckboxModule,
     ButtonModule,
-    InputTextModule,
-    RoleDetailComponent
-  ],
+    InputTextModule],
   templateUrl: './role.component.html',
   styleUrl: './role.component.scss'
 })

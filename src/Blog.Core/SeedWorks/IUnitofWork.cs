@@ -8,6 +8,8 @@ namespace Blog.Core.SeedWorks
     {
         IPostRepository Posts { get; }
         ITagRepository Tags { get; }
+        IPostCategoryRepository PostCategories { get; }
+        ISeriesRepository Series { get; }
         Task<int> CompleteAsync();
 
     }

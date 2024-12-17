@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Blog.Core.Domain.Content;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Blog.Core.Model.Content
 {
@@ -23,7 +20,10 @@ namespace Blog.Core.Model.Content
         public string? Thumbnail { get; set; }
         public int ViewCount { get; set; }
         public DateTime DateCreated { get; set; }
-
+        public required string CategorySlug { set; get; }
+        public required string CategoryName { set; get; }
+        public string AuthorUserName { set; get; }
+        public string AuthorName { set; get; }
         public class AutoMapperProfiles : Profile
         {
             public AutoMapperProfiles()

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Blog.Data\Blog.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
