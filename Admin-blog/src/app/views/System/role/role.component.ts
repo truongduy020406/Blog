@@ -13,7 +13,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { AlertService } from '../../../shared/service/alert.service';
+import { AlertService } from '../../../Shared/service/alert.service';
 import { MessageConstants } from '../../../Shared/constants/Message.constants'
 import { DialogService, DynamicDialogComponent } from 'primeng/dynamicdialog';
 import { RoleDetailComponent } from './role-detail/role-detail.component'
@@ -83,7 +83,7 @@ export class RoleComponent  implements OnInit, OnDestroy{
   }
 
   pageChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event.page + 1;
     this.pageSize = event.rows;
     this.loadData();
   }

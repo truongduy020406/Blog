@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Domain.Content;
 using Blog.Core.Domain.Identity;
+using Blog.Core.Domain.Royalty;
 using Blog.Core.SeedWorks.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Blog.Data
         public DbSet<PostActivityLog> PostActivityLogs { get; set; }
         public DbSet<Series> Series { get; set; }
         public DbSet<PostInSeries> PostInSeries { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

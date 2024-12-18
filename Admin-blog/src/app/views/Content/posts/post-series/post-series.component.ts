@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants';
+import { MessageConstants } from '../../../../Shared/constants/Message.constants';
 import { PostDto } from '../Model/PostDto.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UtilityService } from 'src/app/Shared/Service/utility.service';
+import { UtilityService } from '../../../../Shared/Service/utility.service';
 import { PostService } from '../Services/post.service';
-import { AlertService } from 'src/app/shared/service/alert.service';
+import { AlertService } from '../../../../Shared/service/alert.service';
 import { SeriesService } from '../../Services/series.service';
 import { SeriesInListDto } from '../../series/Model/SeriesInListDto.model'
 import { AddPostSeriesRequest } from '../../series/Model/AddPostSeriesRequest.model';

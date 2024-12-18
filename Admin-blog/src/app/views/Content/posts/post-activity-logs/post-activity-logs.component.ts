@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { UtilityService } from 'src/app/Shared/Service/utility.service';
 import { PostActivityLogDto } from '../Model/PostActivityLogDto.model';
 import { PostService } from '../Services/post.service'
 import { PanelModule } from 'primeng/panel';
@@ -37,7 +36,6 @@ export class PostActivityLogsComponent {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private utilService: UtilityService,
     private postApiClient: PostService,
   ) { }
 

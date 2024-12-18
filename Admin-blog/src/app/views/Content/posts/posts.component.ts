@@ -4,12 +4,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { PostCategoryService } from '../Services/post-category.service';
 import { PostService } from './Services/post.service';
 import { DialogService, DynamicDialogComponent } from 'primeng/dynamicdialog';
-import { AlertService } from 'src/app/shared/service/alert.service';
+import { AlertService } from '../../../Shared/service/alert.service';
 import { ConfirmationService } from 'primeng/api';
 import { PostInListDtoPagedResult } from './Model/PostInListDtoPagedResult.model'
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostCategoryDto } from '../Model/PostCategoryDto.model';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants';
+import { MessageConstants } from '../../../Shared/constants/Message.constants';
 import { PostDto } from './Model/PostDto.model';
 import { PostSeriesComponent } from './post-series/post-series.component';
 import { PostReturnReasonComponent } from './post-return-reason/post-return-reason.component';
@@ -126,7 +126,7 @@ export class PostsComponent {
   }
 
   pageChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event.page + 1;
     this.pageSize = event.rows;
     this.loadData();
   }

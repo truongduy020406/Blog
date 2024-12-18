@@ -1,17 +1,17 @@
 import { Component, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { PostDto } from '../../posts/Model/PostDto.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UtilityService } from 'src/app/Shared/Service/utility.service';
+import { UtilityService } from '../../../../Shared/Service/utility.service';
 import { SeriesService } from '../../Services/series.service';
-import { UploadService } from 'src/app/Shared/Service/upload.service';
+import { UploadService } from '../../../../Shared/Service/upload.service';
 import { SeriesDto } from '../Model/SeriesDto.model'
 import { PanelModule } from 'primeng/panel';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputTextModule } from 'primeng/inputtext'; 
-import { ValidationMessageComponent } from 'src/app/Shared/modules/validation-message/validation-message.component'
+import { ValidationMessageComponent } from '../../../../Shared/modules/validation-message/validation-message.component'
 import { ImageModule } from 'primeng/image';
 import { CommonModule } from '@angular/common';
 import { CheckboxModule } from 'primeng/checkbox';

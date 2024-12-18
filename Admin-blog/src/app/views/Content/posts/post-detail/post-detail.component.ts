@@ -2,13 +2,13 @@ import { Component, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
-import { UtilityService } from 'src/app/Shared/Service/utility.service';
+import { UtilityService } from '../../../../Shared/Service/utility.service';
 import { PostCategoryDto } from '../../Model/PostCategoryDto.model';
 import { PostService } from '../Services/post.service';
 import { PostCategoryService } from '../../Services/post-category.service';
 import { UploadService } from '../../../../Shared/Service/upload.service';
 import { PostDto } from '../Model/PostDto.model'
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { PanelModule } from 'primeng/panel';
 import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';

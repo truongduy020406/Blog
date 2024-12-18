@@ -2,11 +2,11 @@ import { Component, forwardRef } from '@angular/core';
 import { PostCategoryDto } from '../Model/PostCategoryDto.model';
 import { PostCategoryService } from '../Services/post-category.service';
 import { DialogService, DynamicDialogComponent } from 'primeng/dynamicdialog';
-import { AlertService } from 'src/app/shared/service/alert.service';
+import { AlertService } from '../../../Shared/service/alert.service';
 import { ConfirmationService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 import { PostCategoryDetailComponent } from '../post-category-detail/post-category-detail.component';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants';
+import { MessageConstants } from '../../../Shared/constants/Message.constants';
 import { PostCategoryDtoPagedResult } from '../Model/PostCategoryDtoPagedResult.model';
 import { PanelModule } from 'primeng/panel';
 import { KeyFilterModule } from 'primeng/keyfilter';
@@ -17,7 +17,7 @@ import { BadgeModule } from 'primeng/badge';
 import { PaginatorModule } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-post-category',

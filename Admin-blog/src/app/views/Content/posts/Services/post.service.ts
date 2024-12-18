@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ADMIN_API_BASE_URL } from 'src/app/views/Auth/Service/auth.service';
+import { ADMIN_API_BASE_URL } from '../../../../views/Auth/Service/auth.service';
 import { PostActivityLogDto } from '../Model/PostActivityLogDto.model';
-import { PostDto } from '../Model/PostDto.model';
 import { CreateUpdatePostRequest } from '../Model/CreateUpdatePostRequest.model';
 import { ReturnBackRequest } from '../Model/ReturnBackRequest.model'
 import { SeriesInListDto } from '../../series/Model/SeriesInListDto.model';

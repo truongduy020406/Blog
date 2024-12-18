@@ -6,7 +6,7 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
 import { RoleAssignComponent } from './role-assign/role-assign.component';
 import { SetPasswordComponent } from './set-password/set-password.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { AlertService } from '../../../shared/service/alert.service'
+import { AlertService } from '../../../Shared/service/alert.service'
 import { UserService } from './Service/user.service';
 import { UserDto } from './Models/UserDto.model';
 import { MessageConstants } from '../../../Shared/constants/Message.constants'
@@ -115,7 +115,7 @@ showAddModal() {
 }
 
 pageChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event.page + 1;
     this.pageSize = event.rows;
     this.loadData();
 }

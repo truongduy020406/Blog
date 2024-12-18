@@ -5,15 +5,11 @@ using Blog.Core.Model;
 using Blog.Core.Repository;
 using Blog.Data.SeedWorks;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Blog.Core.SeedWorks.Constants.Permissions;
 
 namespace Blog.Data.Repositorys
 {
-    public class SeriesRepository : RepositoryBase<Series, Guid>, ISeriesRepository
+    public class SeriesRepository : RepositoryBase<Core.Domain.Content.Series, Guid>, ISeriesRepository
     {
         private readonly IMapper _mapper;
         public SeriesRepository(BlogContext context, IMapper mapper) : base(context)
@@ -34,7 +30,10 @@ namespace Blog.Data.Repositorys
                 });
             }
         }
-
+        public async Task<bool> HasPost(Guid seriesId)
+        {
+            return await _context.PostInSeries.AnyAsync(x => x.SeriesId == seriesId);
+        }
         public async Task<PagedResult<SeriesInListDto>> GetAllPaging(string? keyword, int pageIndex = 1, int pageSize = 10)
         {
             var query = _context.Series.AsQueryable();

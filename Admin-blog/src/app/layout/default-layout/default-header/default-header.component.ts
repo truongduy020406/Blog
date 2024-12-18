@@ -1,4 +1,4 @@
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
+import {  NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -27,14 +27,19 @@ import {
 } from '@coreui/angular';
 
 import { IconDirective } from '@coreui/icons-angular';
-import { TokenStorageService } from '../../../shared/service/token.service';
-import { UrlConstants } from '../../../shared/constants/Url.onstants'
+import { TokenStorageService } from '../../../Shared/Service/token.service';
+import { UrlConstants } from '../../../Shared/constants/Url.onstants'
 
 @Component({
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
   standalone: true,
-  imports: [ContainerComponent, HeaderTogglerDirective, SidebarToggleDirective, IconDirective, HeaderNavComponent, NavItemComponent, NavLinkDirective, RouterLink, RouterLinkActive, NgTemplateOutlet, BreadcrumbRouterComponent, ThemeDirective, DropdownComponent, DropdownToggleDirective, TextColorDirective, AvatarComponent, DropdownMenuDirective, DropdownHeaderDirective, DropdownItemDirective, BadgeComponent, DropdownDividerDirective, ProgressBarDirective, ProgressComponent, NgStyle]
+  imports: [ContainerComponent, HeaderTogglerDirective,
+    SidebarToggleDirective, IconDirective, HeaderNavComponent,
+    NavItemComponent, NavLinkDirective, RouterLink, RouterLinkActive,
+    NgTemplateOutlet, BreadcrumbRouterComponent, ThemeDirective, DropdownComponent,
+    DropdownToggleDirective, TextColorDirective, AvatarComponent, DropdownMenuDirective,
+    DropdownHeaderDirective, DropdownItemDirective, BadgeComponent, DropdownDividerDirective]
 })
 export class DefaultHeaderComponent extends HeaderComponent {
   private tokenService = inject(TokenStorageService)
