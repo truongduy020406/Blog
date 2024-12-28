@@ -29,6 +29,8 @@ namespace Blog.Core.Model.Content
         public bool IsPaid { get; set; }
         public double RoyaltyAmount { get; set; }
         public DateTime? PaidDate { get; set; }
+
+        public int?  DisplayOrder { get; set; }
         public class AutoMapperProfiles : Profile
         {
             public AutoMapperProfiles()

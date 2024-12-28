@@ -86,7 +86,6 @@ namespace Blog.Api.Controllers.AdminApi
 
         [HttpGet]
         [Route("paging")]
-        [Authorize(PostCategories.View)]
         public async Task<ActionResult<PagedResult<PostCategoryDto>>> GetPostCategoriesPaging(string? keyword,
             int pageIndex, int pageSize = 10)
         {
@@ -95,7 +94,6 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpGet]
-        [Authorize(PostCategories.View)]
         public async Task<ActionResult<List<PostCategoryDto>>> GetPostCategories()
         {
             var query = await _unitOfWork.PostCategories.GetAllAsync();

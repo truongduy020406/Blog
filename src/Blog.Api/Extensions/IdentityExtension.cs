@@ -14,7 +14,7 @@ namespace Blog.Api.Extensions
 
         public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
         {
-            var claim = ((ClaimsIdentity)claimsPrincipal.Identity).Claims.Single(x => x.Type == UserClaims.Id);
+            var claim = ((ClaimsIdentity)claimsPrincipal?.Identity).Claims.Single(x => x.Type == UserClaims.Id);
             return Guid.Parse(claim.Value);
         }
     }

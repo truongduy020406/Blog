@@ -60,26 +60,27 @@ export class DefaultLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = this.tokenService.getUser();
-    if (!user) {
+    var user = this.tokenService.getUser();
+    if (user == null) {
       this.router.navigate([UrlConstants.LOGIN]);
-      return; 
+      return;
     }
-
-    const permissions = user.permissions ? JSON.parse(user.permissions) : []; 
-
-    for (let index = 0; index < navItems.length; index++) {
-      const children = navItems[index].children ?? []; 
-
-      for (let childIndex = 0; childIndex < children.length; childIndex++) {
-        const child = children[childIndex];
-        const policyName = child.attributes?.['policyName']; // Sử dụng optional chaining
-        if (policyName && !permissions.includes(policyName)) {
-          child.class = 'hidden'; // Gán class là 'hidden' nếu không có quyền
+  
+    var permissions = JSON.parse(user?.permissions || '[]');
+    for (var index = 0; index < navItems.length; index++) {
+      var children = navItems[index]?.children ?? []; // Nếu `children` không tồn tại, sử dụng mảng rỗng
+      for (var childIndex = 0; childIndex < children.length; childIndex++) {
+        var child = children[childIndex];
+        if (
+          child?.attributes?.['policyName'] &&
+          !permissions.includes(child.attributes['policyName'])
+        ) {
+          child.class = 'hidden'; // Gán class nếu không có quyền
         }
       }
     }
-
-    this.navItems = navItems; // Gán navItems sau khi xử lý
+  
+    this.navItems = navItems;
   }
+  
 }

@@ -1,0 +1,20 @@
+<div class="grid grid-cols-4 gap-4 mt-4" >
+    @for (item of dataPost?.results; track $index) {
+        <p-card (click)="navigateToDetail(item.id)">
+            <ng-template pTemplate="header">
+                <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+            </ng-template>
+            <ng-template pTemplate="title"> {{item.name}}</ng-template>
+            <ng-template pTemplate="subtitle"> {{item.slug}} </ng-template>
+            <p>
+                {{item.description}}
+            </p>
+            <ng-template pTemplate="footer">
+                <div class="flex gap-4 mt-1">
+                    <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" />
+                    <p-button  label="Save" class="w-full" styleClass="w-full" />
+                </div>
+            </ng-template>
+        </p-card>
+    }
+</div>

@@ -10,6 +10,7 @@ import { PanelModule } from 'primeng/panel';
 import { BlockUIModule } from 'primeng/blockui';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-series-posts',
@@ -18,7 +19,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PanelModule,
     BlockUIModule,
     TableModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ButtonModule
   ],
   templateUrl: './series-posts.component.html',
   styleUrl: './series-posts.component.scss'
@@ -61,6 +63,7 @@ export class SeriesPostsComponent {
       .subscribe({
         next: (response: PostInListDto[]) => {
           this.posts = response;
+          console.log(this.posts)
           this.toggleBlockUI(false);
         },
         error: (error) => {

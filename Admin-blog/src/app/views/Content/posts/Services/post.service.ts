@@ -130,4 +130,20 @@ export class PostService {
 
     return this.http.get(url_)
   }
+
+  getPostTags(postId: string) {
+    let url_ = this.baseUrl + "/api/admin/post/tags/{postId}";
+    if (postId === undefined || postId === null)
+        throw new Error("The parameter 'postId' must be defined.");
+    url_ = url_.replace("{postId}", encodeURIComponent("" + postId));
+    url_ = url_.replace(/[?&]$/, "");
+
+    return this.http.get(url_)
+  }
+
+  getAllTags() {
+    let url_ = this.baseUrl + "/api/admin/post/tags";
+    return this.http.get( url_)
+  }
+
 }

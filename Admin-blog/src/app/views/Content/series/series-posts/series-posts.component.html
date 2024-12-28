@@ -18,7 +18,7 @@
               <p-tableCheckbox [value]="row"></p-tableCheckbox>
             </td>
             <td>{{ row.name }}</td>
-            <td>{{ row.sortOrder }}</td>
+            <td>{{ row.displayOrder }}</td>
             <td>
               <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Xóa" tooltipPosition="top"
                 (click)="removePost(row.id)" class="p-button-rounded p-button-text p-button-danger"></button>

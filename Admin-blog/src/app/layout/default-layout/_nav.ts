@@ -21,9 +21,9 @@ export const navItems: INavData[] = [
       {
         name: 'Danh mục',
         url: '/content/post-categories',
-          attributes: {
-            "policyName": "Permissions.PostCategories.View"
-          }
+        attributes: {
+          "policyName": "Permissions.PostCategories.View"
+        }
       },
       {
         name: 'Bài viết',

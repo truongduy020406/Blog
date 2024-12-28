@@ -21,14 +21,25 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody] CreateUpdateTagRequest request)
+        public async Task<IActionResult> CreateTag([FromBody] CreateUpdateTagRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+
             var tag = _mapper.Map<CreateUpdateTagRequest, Tag>(request);
+
+            if (tag == null)
+            {
+                return BadRequest("Mapping failed.");
+            }
 
             _unitOfWork.Tags.Add(tag);
 
             var result = await _unitOfWork.CompleteAsync();
             return result > 0 ? Ok() : BadRequest();
         }
+
     }
 }

@@ -63,9 +63,38 @@ namespace Blog.Data.Repositorys
                         join p in _context.Posts
                         on pis.PostId equals p.Id
                         where pis.SeriesId == seriesId
-                        select p;
-            return await _mapper.ProjectTo<PostInListDto>(query).ToListAsync();
+                        select new
+                        {
+                            Post = p,
+                            DisplayOrder = pis.DisplayOrder
+                        };
+
+            var result = await query.ToListAsync();
+
+            // Ánh xạ thủ công từ kết quả truy vấn sang PostInListDto
+            var mappedPosts = result.Select(x => new PostInListDto
+            {
+                Id = x.Post.Id, 
+                Name = x.Post.Name,
+                Slug = x.Post.Slug,
+                Description = x.Post.Description,
+                Thumbnail = x.Post.Thumbnail,
+                ViewCount = x.Post.ViewCount,
+                DateCreated = x.Post.DateCreated,
+                CategorySlug = x.Post.CategorySlug,
+                CategoryName = x.Post.CategoryName,
+                AuthorUserName = x.Post.AuthorUserName,
+                AuthorName = x.Post.AuthorName,
+                Status = x.Post.Status,
+                IsPaid = x.Post.IsPaid,
+                RoyaltyAmount = x.Post.RoyaltyAmount,
+                PaidDate = x.Post.PaidDate,
+                DisplayOrder = x.DisplayOrder // Thêm DisplayOrder từ PostInSeries
+            }).ToList();
+
+            return mappedPosts;
         }
+
 
         public async Task<bool> IsPostInSeries(Guid seriesId, Guid postId)
         {
@@ -81,5 +110,6 @@ namespace Blog.Data.Repositorys
                 _context.PostInSeries.Remove(postInSeries);
             }
         }
+
     }
 }

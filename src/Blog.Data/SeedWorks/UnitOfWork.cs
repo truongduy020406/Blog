@@ -23,8 +23,11 @@ namespace Blog.Data.SeedWorks
             Posts = new PostRepository(context, mapper, userManager);
             PostCategories = new PostCategoryRepository(context, mapper);
             Series = new SeriesRepository(context, mapper);
+            Tags = new TagRepository(context, mapper);
             Transactions = new TransactionRepository(context, mapper);
             Users = new UserRepository(context);
+            
+
 
         }
         public IPostRepository Posts { get; private set; }

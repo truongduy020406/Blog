@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { MessageConstants } from '../../../../Shared/constants/Message.constants';
@@ -15,6 +15,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
   selector: 'app-post-series',
   standalone: true,
@@ -24,7 +27,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     DropdownModule,
     TableModule,
     BlockUIModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ButtonModule,
+    InputNumberModule
   ],
   templateUrl: './post-series.component.html',
   styleUrl: './post-series.component.scss'

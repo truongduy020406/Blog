@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Domain.Content;
+using Blog.Core.Model.Content;
 using Blog.Core.SeedWorks;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Blog.Core.Repository
 {
     public interface ITagRepository : IRepository<Tag, Guid>
     {
-       
+        Task<TagDto> GetBySlug(string slug);
     }
 }

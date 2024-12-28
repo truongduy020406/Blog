@@ -19,6 +19,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ValidationMessageComponent} from '../../../../Shared/modules/validation-message/validation-message.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
+import {  AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 @Component({
   selector: 'app-post-detail',
   standalone: true,
@@ -33,7 +34,8 @@ import { EditorModule } from 'primeng/editor';
     InputTextModule,
     ValidationMessageComponent,
     DropdownModule,
-    EditorModule
+    EditorModule,
+    AutoCompleteModule
   ],
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss'
@@ -42,18 +44,21 @@ export class PostDetailComponent {
   private ngUnsubscribe = new Subject<void>();
 
   // Default
-   blockedPanelDetail: boolean = false;
-   form!: FormGroup;
-   title: string = '';
-   btnDisabled = false;
-   saveBtnName: string = '';
-   postCategories: any[] = [];
-   contentTypes: any[] = [];
-   series: any[] = [];
+  blockedPanelDetail: boolean = false;
+  form!: FormGroup;
+  title: string = '';
+  btnDisabled = false;
+  saveBtnName: string = '';
+  postCategories: any[] = [];
+  contentTypes: any[] = [];
+  series: any[] = [];
 
   selectedEntity = {} as PostDto;
-  public thumbnailImage:any;
+  thumbnailImage:any;
 
+  tags: string[] | undefined;
+  filteredTags: any;
+  postTags: string[] = [];
   formSavedEventEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -64,7 +69,7 @@ export class PostDetailComponent {
     private postApiClient: PostService,
     private postCategoryApiClient: PostCategoryService,
     private uploadService: UploadService
-  ) { }
+  ) {}
   ngOnDestroy(): void {
     if (this.ref) {
       this.ref.close();
@@ -74,8 +79,10 @@ export class PostDetailComponent {
   }
 
   public generateSlug() {
-    var slug = this.utilService.makeSeoTitle(this.form.get('name')?.value);
-    this.form.controls['slug'].setValue(slug);
+    if (this.form) {
+      const slug = this.utilService.makeSeoTitle(this.form.get('name')?.value);
+      this.form.controls['slug'].setValue(slug);
+    }
   }
   // Validate
   noSpecial: RegExp = /^[^<>*!_~]+$/;
@@ -94,24 +101,34 @@ export class PostDetailComponent {
     this.buildForm();
     //Load data to form
     var categories = this.postCategoryApiClient.getPostCategories();
-
+    var tags = this.postApiClient.getAllTags();
     this.toggleBlockUI(true);
     forkJoin({
-      categories
+      categories,
+      tags,
     })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: (repsonse: any) => {
           //Push categories to dropdown list
+          this.tags = repsonse.tags as string[];
+
           var categories = repsonse.categories as PostCategoryDto[];
-          categories.forEach(element => {
+          categories.forEach((element) => {
             this.postCategories.push({
               value: element.id,
               label: element.name,
             });
           });
           if (this.utilService.isEmpty(this.config.data?.id) == false) {
-            this.loadFormDetails(this.config.data?.id);
+            this.postApiClient
+              .getPostTags(this.config.data.id)
+              .subscribe((res:any) => {
+                this.postTags = res;
+                this.loadFormDetails(this.config.data?.id);
+              });
+
+            
           } else {
             this.toggleBlockUI(false);
           }
@@ -137,19 +154,17 @@ export class PostDetailComponent {
       });
   }
 
-
   onFileChange(event:any) {
     if (event.target.files && event.target.files.length) {
-      this.uploadService.uploadImage('posts', event.target.files)
-        .subscribe({
-          next: (response: any) => {
-            this.form.controls['thumbnail'].setValue(response.path);
-            this.thumbnailImage = environment.API_URL + response.path;
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        });
+      this.uploadService.uploadImage('posts', event.target.files).subscribe({
+        next: (response: any) => {
+          this.form.controls['thumbnail'].setValue(response.path);
+          this.thumbnailImage = environment.API_URL + response.path;
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
     }
   }
   saveChange() {
@@ -209,20 +224,43 @@ export class PostDetailComponent {
           Validators.minLength(3),
         ])
       ),
-      slug: new FormControl(this.selectedEntity.slug || null, Validators.required),
-      categoryId: new FormControl(this.selectedEntity.categoryId || null, Validators.required),
-      description: new FormControl(this.selectedEntity.description || null, Validators.required),
-      seoDescription: new FormControl(this.selectedEntity.seoDescription || null),
-      tags: new FormControl(this.selectedEntity.tags || null),
-      content: new FormControl(this.selectedEntity.content || null),
-      thumbnail: new FormControl(
-        this.selectedEntity.thumbnail || null
+      slug: new FormControl(
+        this.selectedEntity.slug || null,
+        Validators.required
       ),
+      categoryId: new FormControl(
+        this.selectedEntity.categoryId || null,
+        Validators.required
+      ),
+      description: new FormControl(
+        this.selectedEntity.description || null,
+        Validators.required
+      ),
+      seoDescription: new FormControl(
+        this.selectedEntity.seoDescription || null
+      ),
+      content: new FormControl(this.selectedEntity.content || null),
+      thumbnail: new FormControl(this.selectedEntity.thumbnail || null),
+      tags: new FormControl(this.postTags),
     });
     if (this.selectedEntity.thumbnail) {
       this.thumbnailImage = environment.API_URL + this.selectedEntity.thumbnail;
-
     }
+  }
 
+  filterTag(event: AutoCompleteCompleteEvent) {
+    let filtered: string[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.tags as string[]).length; i++) {
+      let tag = (this.tags as string[])[i];
+      if (tag.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(tag);
+      }
+    }
+    if (filtered.length == 0) {
+      filtered.push(query);
+    }
+    this.filteredTags = filtered;
   }
 }

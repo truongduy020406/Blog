@@ -1,0 +1,29 @@
+<header class="bg-blue-400 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <a href="/" class="text-2xl font-bold hover:text-blue-500">
+          <img src="../../image/blog.png" alt="Logo" class="h-8 w-auto">
+          <span class="ml-2">My Blog</span>
+        </a>
+      </div>
+      
+      <button (click)="test()">1askdhakshdnas</button>
+      <!-- Navigation Menu -->
+      <p-menubar [model]="items" class="flex justify-center"></p-menubar>
+  
+      <!-- Search and Login (using Tailwind CSS) -->
+      <div class="flex items-center space-x-4">
+        
+        <input type="text" placeholder="Search..." class="px-4 py-2 rounded-full text-black bg-gray-100">
+        <button *ngIf="!user" class="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-700" routerLink="/Auth/login">
+          Login
+        </button >
+        <button *ngIf="!user" class="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-700" routerLink="/Auth/register">
+          Register
+        </button >
+        <h1 *ngIf="user">Hi {{name}}</h1>
+      </div>
+    </div>
+  </header>
+  

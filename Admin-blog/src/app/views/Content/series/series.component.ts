@@ -74,6 +74,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: PostInListDtoPagedResult) => {
           this.items = response.results;
+          console.log(this.items)
           this.totalCount = response.rowCount;
           this.toggleBlockUI(false);
         }
