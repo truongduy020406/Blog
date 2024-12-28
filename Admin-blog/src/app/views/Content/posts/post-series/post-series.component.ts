@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants';
+import { MessageConstants } from '../../../../Shared/constants/Message.constants';
 import { PostDto } from '../Model/PostDto.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UtilityService } from 'src/app/Shared/Service/utility.service';
+import { UtilityService } from '../../../../Shared/Service/utility.service';
 import { PostService } from '../Services/post.service';
-import { AlertService } from 'src/app/shared/service/alert.service';
+import { AlertService } from '../../../../Shared/service/alert.service';
 import { SeriesService } from '../../Services/series.service';
 import { SeriesInListDto } from '../../series/Model/SeriesInListDto.model'
 import { AddPostSeriesRequest } from '../../series/Model/AddPostSeriesRequest.model';
@@ -15,6 +15,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
   selector: 'app-post-series',
   standalone: true,
@@ -24,7 +27,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     DropdownModule,
     TableModule,
     BlockUIModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ButtonModule,
+    InputNumberModule
   ],
   templateUrl: './post-series.component.html',
   styleUrl: './post-series.component.scss'

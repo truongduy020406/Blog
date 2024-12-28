@@ -3,14 +3,14 @@ import { CommonModule, NgStyle } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ContainerComponent, RowComponent, ColComponent, CardGroupComponent, TextColorDirective, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, FormControlDirective, ButtonDirective } from '@coreui/angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '../../../shared/service/alert.service';
+import { AlertService } from '../../../Shared/service/alert.service';
 import { AuthService } from '../Service/auth.service'
 import { Router } from '@angular/router';
 import { loginModel } from '../Model/login.model';
 import {ReactiveFormsModule} from '@angular/forms';
-import { UrlConstants } from '../../../shared/constants/Url.onstants'
-import { TokenStorageService } from '../../../shared/service/token.service';
-import { AuthenticatedResult } from '../../../shared/Model/token.model'
+import { UrlConstants } from '../../../Shared/constants/Url.onstants'
+import { TokenStorageService } from '../../../Shared/Service/token.service';
+import { AuthenticatedResult } from '../../../Shared/Model/token.model'
 import { Subject, takeUntil } from 'rxjs';
 @Component({
     selector: 'app-login',

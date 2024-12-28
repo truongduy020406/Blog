@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { PostInListDto } from '../posts/Model/PostInListDto.model';
 import { DialogService, DynamicDialogComponent, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SeriesService } from '../Services/series.service';
-import { AlertService } from 'src/app/shared/service/alert.service';
-import { AddPostSeriesRequest } from './Model/AddPostSeriesRequest.model';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants';
+import { AlertService } from '../../../Shared/service/alert.service';
+import { MessageConstants } from '../../../Shared/constants/Message.constants';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { BlockUIModule } from 'primeng/blockui';
@@ -76,6 +74,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: PostInListDtoPagedResult) => {
           this.items = response.results;
+          console.log(this.items)
           this.totalCount = response.rowCount;
           this.toggleBlockUI(false);
         }
@@ -106,7 +105,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event.page + 1;
     this.pageSize = event.rows;
     this.loadData();
   }

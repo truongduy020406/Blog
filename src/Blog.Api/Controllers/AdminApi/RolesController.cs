@@ -28,7 +28,7 @@ namespace Blog.Api.Controllers.AdminApi
 
         [HttpPost]
         [ValidateModel]
-        [Authorize(Permissions.Roles.View)]
+/*        [Authorize(Permissions.Roles.View)]*/
         public async Task<IActionResult> CreateRole([FromBody] CreateUpdateRoleRequest request)
         {
             await _roleManager.CreateAsync(new AppRole()

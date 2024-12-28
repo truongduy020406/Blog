@@ -55,7 +55,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     private utilService: UtilityService,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
   ) { }
   ngOnDestroy(): void {
     if (this.ref) {
@@ -78,6 +77,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       },
     ],
     phoneNumber: [{ type: 'required', message: 'Bạn phải nhập số điện thoại' }],
+    royaltyAmountPerPost: [{ type: 'required', message: 'Bạn phải nhập nhuận bút' }],
   };
 
   ngOnInit() {
@@ -238,6 +238,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       avatarFile: new FormControl(null),
       avatar: new FormControl(this.selectedEntity.avatar || null),
       isActive: new FormControl(this.selectedEntity.isActive || true),
+      royaltyAmountPerPost: new FormControl(this.selectedEntity.royaltyAmountPerPost || 0, Validators.required)
     });
   }
 }

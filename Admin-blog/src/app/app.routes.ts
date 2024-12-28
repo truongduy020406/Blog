@@ -24,7 +24,11 @@ export const routes: Routes = [
       {
         path: 'content',
         loadChildren: () => import('./views/Content/router').then((m) => m.routes)
-      }
+      },
+      {
+        path: 'royalty',
+        loadChildren: () => import('../app/views/Royalty/router').then((m) => m.routes),
+      },
     ]
   },
   { path: '**', redirectTo: 'dashboard' }

@@ -1,5 +1,5 @@
 export type UserDto = {
-    id?: string ;
+    id?: string;
     firstName?: string ;
     lastName?: string ;
     userName?: string ;
@@ -13,4 +13,6 @@ export type UserDto = {
     vipStartDate?: Date ;
     vipExpireDate?: Date ;
     lastLoginDate?: Date ;
+    balance?: number;
+    royaltyAmountPerPost?: number;
 }

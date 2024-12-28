@@ -15,7 +15,7 @@ import {
   take,
   throwError,
 } from 'rxjs';
-import { TokenStorageService } from '../service/token.service';
+import { TokenStorageService } from '../Service/token.service';
 import { AuthenticatedResult } from '../Model/token.model';
 import { TokenRequest } from '../Model/TokenRequest.model';
 

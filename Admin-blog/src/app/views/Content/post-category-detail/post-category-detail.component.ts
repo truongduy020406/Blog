@@ -7,7 +7,7 @@ import { UtilityService } from '../../../Shared/Service/utility.service'
 import { PostCategoryService } from '../Services/post-category.service';
 import { PanelModule } from 'primeng/panel';
 import { KeyFilterModule } from 'primeng/keyfilter';
-import { ValidationMessageComponent } from 'src/app/Shared/modules/validation-message/validation-message.component';
+import { ValidationMessageComponent } from '../../../Shared/modules/validation-message/validation-message.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BlockUIModule } from 'primeng/blockui';
 import { CheckboxModule } from 'primeng/checkbox';

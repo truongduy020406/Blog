@@ -10,6 +10,8 @@ namespace Blog.Core.SeedWorks
         ITagRepository Tags { get; }
         IPostCategoryRepository PostCategories { get; }
         ISeriesRepository Series { get; }
+        ITransactionRepository Transactions { get; }
+        IUserRepository Users { get; }
         Task<int> CompleteAsync();
 
     }

@@ -6,6 +6,7 @@ using Blog.Core.SeedWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Api.Controllers.AdminApi
 {
@@ -76,6 +77,7 @@ namespace Blog.Api.Controllers.AdminApi
             var result = await _unitOfWork.CompleteAsync();
             return result > 0 ? Ok() : BadRequest();
         }
+   
 
         [Route("post-series/{seriesId}")]
         [HttpGet()]
@@ -92,12 +94,16 @@ namespace Blog.Api.Controllers.AdminApi
         {
             foreach (var id in ids)
             {
-                var post = await _unitOfWork.Series.GetByIdAsync(id);
-                if (post == null)
+                var series = await _unitOfWork.Series.GetByIdAsync(id);
+                if (series == null)
                 {
                     return NotFound();
                 }
-                _unitOfWork.Series.Remove(post);
+                if (await _unitOfWork.Series.HasPost(id))
+                {
+                    return BadRequest("Loạt bài đang chứa bài viết, không thể xóa");
+                }
+                _unitOfWork.Series.Remove(series);
             }
             var result = await _unitOfWork.CompleteAsync();
             return result > 0 ? Ok() : BadRequest();

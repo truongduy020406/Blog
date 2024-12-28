@@ -3,13 +3,14 @@ import { PostInListDto } from '../../posts/Model/PostInListDto.model';
 import { Subject, takeUntil } from 'rxjs';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SeriesService } from '../../Services/series.service';
-import { AlertService } from 'src/app/shared/service/alert.service';
+import { AlertService } from '../../../../Shared/service/alert.service';
 import { AddPostSeriesRequest } from '../Model/AddPostSeriesRequest.model';
-import { MessageConstants } from 'src/app/Shared/constants/Message.constants';
+import { MessageConstants } from '../../../../Shared/constants/Message.constants';
 import { PanelModule } from 'primeng/panel';
 import { BlockUIModule } from 'primeng/blockui';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-series-posts',
@@ -18,7 +19,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PanelModule,
     BlockUIModule,
     TableModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ButtonModule
   ],
   templateUrl: './series-posts.component.html',
   styleUrl: './series-posts.component.scss'
@@ -61,6 +63,7 @@ export class SeriesPostsComponent {
       .subscribe({
         next: (response: PostInListDto[]) => {
           this.posts = response;
+          console.log(this.posts)
           this.toggleBlockUI(false);
         },
         error: (error) => {

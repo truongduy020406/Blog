@@ -5,15 +5,11 @@ using Blog.Core.Model;
 using Blog.Core.Repository;
 using Blog.Data.SeedWorks;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Blog.Core.SeedWorks.Constants.Permissions;
 
 namespace Blog.Data.Repositorys
 {
-    public class SeriesRepository : RepositoryBase<Series, Guid>, ISeriesRepository
+    public class SeriesRepository : RepositoryBase<Core.Domain.Content.Series, Guid>, ISeriesRepository
     {
         private readonly IMapper _mapper;
         public SeriesRepository(BlogContext context, IMapper mapper) : base(context)
@@ -34,7 +30,10 @@ namespace Blog.Data.Repositorys
                 });
             }
         }
-
+        public async Task<bool> HasPost(Guid seriesId)
+        {
+            return await _context.PostInSeries.AnyAsync(x => x.SeriesId == seriesId);
+        }
         public async Task<PagedResult<SeriesInListDto>> GetAllPaging(string? keyword, int pageIndex = 1, int pageSize = 10)
         {
             var query = _context.Series.AsQueryable();
@@ -64,9 +63,38 @@ namespace Blog.Data.Repositorys
                         join p in _context.Posts
                         on pis.PostId equals p.Id
                         where pis.SeriesId == seriesId
-                        select p;
-            return await _mapper.ProjectTo<PostInListDto>(query).ToListAsync();
+                        select new
+                        {
+                            Post = p,
+                            DisplayOrder = pis.DisplayOrder
+                        };
+
+            var result = await query.ToListAsync();
+
+            // Ánh xạ thủ công từ kết quả truy vấn sang PostInListDto
+            var mappedPosts = result.Select(x => new PostInListDto
+            {
+                Id = x.Post.Id, 
+                Name = x.Post.Name,
+                Slug = x.Post.Slug,
+                Description = x.Post.Description,
+                Thumbnail = x.Post.Thumbnail,
+                ViewCount = x.Post.ViewCount,
+                DateCreated = x.Post.DateCreated,
+                CategorySlug = x.Post.CategorySlug,
+                CategoryName = x.Post.CategoryName,
+                AuthorUserName = x.Post.AuthorUserName,
+                AuthorName = x.Post.AuthorName,
+                Status = x.Post.Status,
+                IsPaid = x.Post.IsPaid,
+                RoyaltyAmount = x.Post.RoyaltyAmount,
+                PaidDate = x.Post.PaidDate,
+                DisplayOrder = x.DisplayOrder // Thêm DisplayOrder từ PostInSeries
+            }).ToList();
+
+            return mappedPosts;
         }
+
 
         public async Task<bool> IsPostInSeries(Guid seriesId, Guid postId)
         {
@@ -82,5 +110,6 @@ namespace Blog.Data.Repositorys
                 _context.PostInSeries.Remove(postInSeries);
             }
         }
+
     }
 }

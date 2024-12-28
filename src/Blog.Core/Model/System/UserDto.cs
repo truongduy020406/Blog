@@ -24,6 +24,7 @@ namespace Blog.Core.Model.System
         public DateTime? VipStartDate { get; set; }
         public DateTime? VipExpireDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
+        public double RoyaltyAmountPerPost { get; set; }
         public class AutoMapperProfiles : Profile
         {
             public AutoMapperProfiles()
