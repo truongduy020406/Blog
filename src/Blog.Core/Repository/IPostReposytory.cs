@@ -8,7 +8,7 @@ namespace Blog.Core.Repository
 {
     public interface IPostRepository : IRepository<Post, Guid>
     {
-        Task<PagedResult<PostInListDto>> GetAllPaging(string? keyword, Guid currentUserId, Guid? categoryId, int pageIndex = 1, int pageSize = 10);
+        Task<PagedResult<PostInListDto>> GetAllPaging(string? keyword, Guid? categoryId, int pageIndex = 1, int pageSize = 10);
         Task<bool> IsSlugAlreadyExisted(string slug, Guid? currentId = null);
         Task<List<SeriesInListDto>> GetAllSeries(Guid postId);
         Task Approve(Guid id, Guid currentUserId);

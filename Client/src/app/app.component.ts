@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './Layout/header/header.component';
-import { PostsComponent } from './Views/Content/posts/posts.component';
 
+import { ToastModule } from 'primeng/toast';
+import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
     HeaderComponent,
-    PostsComponent
+    ToastModule,
+    DynamicDialogModule,
+    ConfirmDialogModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

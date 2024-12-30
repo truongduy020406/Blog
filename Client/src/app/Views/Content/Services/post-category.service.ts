@@ -1,0 +1,74 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { ADMIN_API_BASE_URL } from '../../Auth/Service/auth.service';
+import { Observable } from 'rxjs';
+import { PostCategoryDto } from '../Model/PostCategoryDto.model';
+import { CreateUpdatePostCategoryRequest } from '../Model/CreateUpdatePostCategoryRequest.model';
+import { PostCategoryDtoPagedResult } from '../Model/PostCategoryDtoPagedResult.model';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PostCategoryService {
+  private http = inject(HttpClient);
+  private baseUrl  = inject(ADMIN_API_BASE_URL);
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+  getPostCategoryById(id: string): Observable<PostCategoryDto> {
+    let url_ = this.baseUrl + `/api/admin/post-category/${id}`;
+    return this.http.get<PostCategoryDto> (url_)
+  }
+
+  createPostCategory(body?: CreateUpdatePostCategoryRequest | undefined): Observable<CreateUpdatePostCategoryRequest> {
+    let url_ = this.baseUrl + "/api/admin/post-category";
+    url_ = url_.replace(/[?&]$/, "");
+    return this.http.post<CreateUpdatePostCategoryRequest>( url_, body)
+  }
+
+  updatePostCategory(id?: string | undefined, body?: CreateUpdatePostCategoryRequest | undefined): Observable<CreateUpdatePostCategoryRequest> {
+    let url_ = this.baseUrl + "/api/admin/post-category?";
+    if (id === null)
+        throw new Error("The parameter 'id' cannot be null.");
+    else if (id !== undefined)
+        url_ += "id=" + encodeURIComponent("" + id) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    return this.http.put( url_, body)
+  }
+
+  deletePostCategory(ids?: string[] | null | undefined): Observable<void> {
+    let url_ = this.baseUrl + "/api/admin/post-category?";
+    if (ids !== undefined && ids !== null)
+        ids && ids.forEach(item => { url_ += "ids=" + encodeURIComponent("" + item) + "&"; });
+    url_ = url_.replace(/[?&]$/, "");
+
+
+    return this.http.delete<void>( url_)
+  }
+
+  getPostCategoriesPaging(keyword?: string | null | undefined, pageIndex?: number | undefined, pageSize?: number | undefined): Observable<PostCategoryDtoPagedResult> {
+    let url_ = this.baseUrl + "/api/admin/post-category/paging?";
+    if (keyword !== undefined && keyword !== null)
+        url_ += "keyword=" + encodeURIComponent("" + keyword) + "&";
+    if (pageIndex === null)
+        throw new Error("The parameter 'pageIndex' cannot be null.");
+    else if (pageIndex !== undefined)
+        url_ += "pageIndex=" + encodeURIComponent("" + pageIndex) + "&";
+    if (pageSize === null)
+        throw new Error("The parameter 'pageSize' cannot be null.");
+    else if (pageSize !== undefined)
+        url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    return this.http.get<PostCategoryDtoPagedResult>( url_)
+  }
+
+  getPostCategories(): Observable<PostCategoryDto[]> {
+    let url_ = this.baseUrl + "/api/admin/post-category";
+    url_ = url_.replace(/[?&]$/, "");
+
+
+    return this.http.get<PostCategoryDto[]>(url_)
+  }
+}

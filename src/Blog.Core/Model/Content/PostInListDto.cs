@@ -24,7 +24,6 @@ namespace Blog.Core.Model.Content
         public required string CategoryName { set; get; }
         public string AuthorUserName { set; get; }
         public string AuthorName { set; get; }
-
         public PostStatus Status { set; get; }
         public bool IsPaid { get; set; }
         public double RoyaltyAmount { get; set; }

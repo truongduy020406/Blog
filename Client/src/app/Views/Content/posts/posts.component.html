@@ -1,8 +1,8 @@
 <div class="grid grid-cols-4 gap-4 mt-4" >
-    @for (item of dataPost?.results; track $index) {
+    @for (item of dataPost; track $index) {
         <p-card (click)="navigateToDetail(item.id)">
             <ng-template pTemplate="header">
-                <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+                <img alt="Card" class="w-full h-44" [src]="item.thumbnail" />
             </ng-template>
             <ng-template pTemplate="title"> {{item.name}}</ng-template>
             <ng-template pTemplate="subtitle"> {{item.slug}} </ng-template>

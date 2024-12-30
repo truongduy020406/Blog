@@ -1,5 +1,4 @@
-import { PostInListDto } from "./PostInListDto.model";
-
+import { PostInListDto } from './PostInListDto.model'
 export type PostInListDtoPagedResult = {
     currentPage?: number;
     pageCount?: number;

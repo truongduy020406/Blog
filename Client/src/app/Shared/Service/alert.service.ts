@@ -7,6 +7,7 @@ export class AlertService {
     }
 
     showSuccess(message: string) {
+        console.log(message)
         this.messageService.add({ severity: 'success', summary: 'Thành công', detail: message });
     }
 

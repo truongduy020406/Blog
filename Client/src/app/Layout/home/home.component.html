@@ -1,0 +1,56 @@
+<div class="grid grid-cols-10 gap-4 mt-10">
+  <!-- p-dataView div chiếm 8 phần -->
+  <div class="col-span-6">
+    <p-dataView #dv [value]="dataPost" [rows]="5" [paginator]="true" >
+      <ng-template let-collection pTemplate="list">
+        <div class="space-y-6">
+          <div
+            *ngFor="let item of collection"
+            class="flex flex-row bg-white rounded-lg shadow-lg overflow-hidden"
+            
+          >
+            <!-- Thumbnail -->
+            <div class="relative w-1/4 h-32" (click)="navigateToDetail(item.id)">
+                
+              <img
+                class="w-full h-full object-cover"
+                [src]="item.thumbnail"
+                alt="Thumbnail"
+              />
+            </div>
+
+            <!-- Content -->
+            <div class="p-4">
+              <div class="flex flex-row gap-5">
+                <div class="text-xs font-medium text-gray-800 truncate">
+                  By <span class="font-semibold">{{ item.authorName }}</span> on
+                  {{ item.dateCreated | date : "medium" }}
+                </div>
+              </div>
+
+              <div class="pt-4">
+                <span>{{ item.description }}</span>
+              </div>
+
+              <div class="pt-4">
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    *ngFor="let tag of item.tags"
+                    class="bg-slate-400 px-2 py-1 rounded text-white cursor-pointer"
+                  >
+                    <p (click)="getProductTag(tag)">{{ tag }}</p>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+
+  <!-- Div chiếm 2 phần -->
+  <div class="col-span-4">
+    <h1>Test câu hỏi</h1>
+  </div>
+</div>

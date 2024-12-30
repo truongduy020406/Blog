@@ -22,24 +22,9 @@ namespace Blog.Data.Repositorys
             _userManager = userManager;
         }
 
-        public async Task<PagedResult<PostInListDto>> GetAllPaging(string? keyword, Guid currentUserId, Guid? categoryId, int pageIndex = 1, int pageSize = 10)
+        public async Task<PagedResult<PostInListDto>> GetAllPaging(string? keyword, Guid? categoryId, int pageIndex = 1, int pageSize = 10)
         {
-            var user = await _userManager.FindByIdAsync(currentUserId.ToString());
-            if (user == null)
-            {
-                throw new Exception("Không tồn tại user");
-            }
-            var roles = await _userManager.GetRolesAsync(user);
-            var canApprove = false;
-            if (roles.Contains(Roles.Admin))
-            {
-                canApprove = true;
-            }
-            else
-            {
-                canApprove = await _context.RoleClaims.AnyAsync(x => roles.Contains(x.RoleId.ToString())
-                           && x.ClaimValue == Permissions.Posts.Approve);
-            }
+           
 
             var query = _context.Posts.AsQueryable();
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -51,10 +36,7 @@ namespace Blog.Data.Repositorys
                 query = query.Where(x => x.CategoryId == categoryId.Value);
             }
 
-            if (!canApprove)
-            {
-                query = query.Where(x => x.AuthorUserId == currentUserId);
-            }
+         
 
             var totalRow = await query.CountAsync();
 

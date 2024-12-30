@@ -1,6 +1,13 @@
 <app-header></app-header>
-<div class="container mx-auto">
+<div class="container mx-auto max-w-[1280px]">
     <router-outlet>
 
     </router-outlet>
 </div>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Xác nhận"
+  acceptLabel="Có"
+  rejectLabel="Không"
+  icon="pi pi-exclamation-triangle">
+</p-confirmDialog>

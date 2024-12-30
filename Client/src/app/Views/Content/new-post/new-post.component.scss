@@ -1,0 +1,12 @@
+input, textarea, select {
+  border: 1px solid #ccc; /* default border color */
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+::ng-deep .p-autocomplete {
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+}
+
+

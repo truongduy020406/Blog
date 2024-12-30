@@ -59,6 +59,8 @@ namespace Blog.Api.Controllers.UserApi
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.Avatar = model.Avatar;
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)

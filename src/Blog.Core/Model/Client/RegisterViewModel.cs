@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Model.Client
 {
-    public class RegsiterViewModel
+    public class RegisterViewModel
     {
         [Required(ErrorMessage = "First name is required")]
         [DisplayName("First Name")]

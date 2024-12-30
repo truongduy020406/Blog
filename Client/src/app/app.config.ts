@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig} from '@angular/core';
 import { provideRouter, withEnabledBlockingInitialNavigation, withHashLocation, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
@@ -11,6 +11,13 @@ import { GlobalHttpInterceptorService } from './Shared/interceptors/error-handle
 import { AlertService } from './Shared/Service/alert.service';
 import { AuthGuard } from './Shared/auth.guard';
 import { UtilityService } from './Shared/Service/utility.service';
+import { provideMarkdown } from 'ngx-markdown';
+import TurndownService from 'turndown';
+import 'prismjs';
+import 'prismjs/components/prism-typescript.min.js';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
+import 'prismjs/plugins/line-highlight/prism-line-highlight.js';
+import { DialogService } from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,11 +46,15 @@ export const appConfig: ApplicationConfig = {
     ),
     AlertService,
     MessageService,
-
     AuthGuard,
     UtilityService,
     ConfirmationService,
+    DialogService,
     provideHttpClient(withInterceptorsFromDi()),
-    provideAnimations()
+    provideAnimations(),
+    provideMarkdown(),
+
   ]
 };
+
+

@@ -1,0 +1,270 @@
+<div class="grid grid-cols-8 gap-5">
+  <!-- Menu panel bên trái -->
+  <div class="col-span-2">
+    <p-panelMenu
+      [model]="items"
+      class="w-96"
+      (onTabChange)="onTabChange($event)"
+    >
+    </p-panelMenu>
+  </div>
+
+  <div class="col-span-6">
+    <div *ngIf="selectedTab === 'Thông tin cá nhân'">
+      <form [formGroup]="userForm" (ngSubmit)="onSubmitProfile()">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col">
+            <label for="firstName" class="font-medium text-gray-700">Họ</label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              class="w-full p-2 border rounded-md"
+            />
+            <div
+              *ngIf="
+                userForm.get('firstName')?.invalid &&
+                userForm.get('firstName')?.touched
+              "
+              class="text-red-500"
+            >
+              Họ là bắt buộc!
+            </div>
+          </div>
+
+          <div class="flex flex-col">
+            <label for="lastName" class="font-medium text-gray-700">Tên</label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              class="w-full p-2 border rounded-md"
+            />
+            <div
+              *ngIf="
+                userForm.get('lastName')?.invalid &&
+                userForm.get('lastName')?.touched
+              "
+              class="text-red-500"
+            >
+              Tên là bắt buộc!
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="email" class="font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="w-full p-2 border rounded-md"
+          />
+          <div
+            *ngIf="
+              userForm.get('email')?.invalid && userForm.get('email')?.touched
+            "
+            class="text-red-500"
+          >
+            Email không hợp lệ!
+          </div>
+        </div>
+
+        <p-button
+          type="submit"
+          [disabled]="userForm.invalid || userForm.pristine"
+          class="p-button p-button-success mt-4"
+        >
+          Lưu
+        </p-button>
+      </form>
+    </div>
+    <div *ngIf="selectedTab === 'Mật khẩu'">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+        <!-- Form Change Password -->
+        <div class="col-span-1">
+          <h2 class="text-2xl font-semibold mb-4">Đổi Mật Khẩu</h2>
+          <form
+            [formGroup]="changePasswordForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-4"
+          >
+            <!-- Old Password -->
+            <div class="flex flex-col">
+              <label for="oldPassword" class="font-medium text-lg"
+                >Mật khẩu cũ</label
+              >
+              <p-password
+                id="oldPassword"
+                formControlName="oldPassword"
+                [feedback]="false"
+                class="p-inputtext p-component border-2 border-gray-300 rounded-md p-2"
+                [styleClass]="
+                  changePasswordForm.controls['oldPassword'].touched &&
+                  changePasswordForm.controls['oldPassword'].invalid
+                    ? 'p-invalid'
+                    : ''
+                "
+              >
+              </p-password>
+              <small
+                *ngIf="
+                  changePasswordForm.controls['oldPassword'].invalid &&
+                  changePasswordForm.controls['oldPassword'].touched
+                "
+                class="p-error"
+                >Mật khẩu cũ không hợp lệ</small
+              >
+            </div>
+
+            <!-- New Password -->
+            <div class="flex flex-col">
+              <label for="newPassword" class="font-medium text-lg"
+                >Mật khẩu mới</label
+              >
+              <p-password
+                id="newPassword"
+                formControlName="newPassword"
+                [feedback]="false"
+                class="p-inputtext p-component border-2 border-gray-300 rounded-md p-2"
+                [styleClass]="
+                  changePasswordForm.controls['newPassword'].touched &&
+                  changePasswordForm.controls['newPassword'].invalid
+                    ? 'p-invalid'
+                    : ''
+                "
+              >
+              </p-password>
+              <small
+                *ngIf="
+                  changePasswordForm.controls['newPassword'].invalid &&
+                  changePasswordForm.controls['newPassword'].touched
+                "
+                class="p-error"
+                >Mật khẩu mới không hợp lệ</small
+              >
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="flex flex-col">
+              <label for="confirmPassword" class="font-medium text-lg"
+                >Xác nhận mật khẩu</label
+              >
+              <p-password
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                [feedback]="false"
+                class="border-2 border-gray-300 rounded-md p-2"
+                [styleClass]="
+                  changePasswordForm.controls['confirmPassword'].touched &&
+                  changePasswordForm.controls['confirmPassword'].invalid
+                    ? 'p-invalid'
+                    : ''
+                "
+              >
+              </p-password>
+              <small
+                *ngIf="
+                  changePasswordForm.controls['confirmPassword'].invalid &&
+                  changePasswordForm.controls['confirmPassword'].touched
+                "
+                class="p-error"
+                >Mật khẩu xác nhận không khớp</small
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <p-button
+              type="submit"
+              label="Lưu"
+              [disabled]="changePasswordForm.invalid || !isPasswordChanged()"
+              class="p-button p-button-success mt-4 w-full"
+              icon="pi pi-save"
+            >
+            </p-button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedTab === 'Công khai'">
+      <div class="flex flex-col space-y-4">
+        <div
+          *ngFor="let post of postPublic"
+          class="flex items-center justify-between p-4 border border-gray-300 rounded-lg shadow-sm"
+        >
+          <!-- Nội dung bài viết -->
+          <div class="flex-1">
+            <h3 class="font-semibold text-lg text-gray-800">{{ post.name }}</h3>
+            <p class="text-sm text-gray-600">{{ post.description }}</p>
+            <p class="text-xs text-gray-500">
+              By {{ post.authorName }} | Created:
+              {{ post.dateCreated | date : "short" }}
+            </p>
+          </div>
+
+          <!-- Nút Sửa và Xoá -->
+          <div class="flex space-x-2">
+            <button
+              pButton
+              type="button"
+              label="Sửa"
+              icon="pi pi-pencil"
+              class="p-button-sm p-button-warning"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="Xoá"
+              icon="pi pi-trash"
+              class="p-button-sm p-button-danger"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 'Bản nháp'">
+        <div class="flex flex-col space-y-4">
+          <div
+            *ngFor="let post of postPrivate"
+            class="flex items-center justify-between p-4 border border-gray-300 rounded-lg shadow-sm"
+          >
+            <!-- Nội dung bài viết -->
+            <div class="flex-1">
+              <h3 class="font-semibold text-lg text-gray-800">{{ post.name }}</h3>
+              <p class="text-sm text-gray-600">{{ post.description }}</p>
+              <p class="text-xs text-gray-500">
+                By {{ post.authorName }} | Created:
+                {{ post.dateCreated | date : "short" }}
+              </p>
+            </div>
+  
+            <!-- Nút Sửa và Xoá -->
+            <div class="flex space-x-2">
+              <button
+                pButton
+                type="button"
+                label="Đăng"
+                icon="pi pi-pencil"
+                class="p-button-sm p-button-warning"
+              ></button>
+              <button
+              pButton
+              type="button"
+              label="Sửa"
+              icon="pi pi-pencil"
+              class="p-button-sm p-button-warning"
+            ></button>
+              <button
+                pButton
+                type="button"
+                label="Xoá"
+                icon="pi pi-trash"
+                class="p-button-sm p-button-danger"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
