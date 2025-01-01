@@ -1,20 +1,46 @@
-<div class="grid grid-cols-4 gap-4 mt-4" >
-    @for (item of dataPost?.results; track $index) {
+<div class="container mx-auto max-w-screen-xl">
+    <div class="grid grid-cols-4 gap-4 mt-4">
+      <ng-container *ngFor="let item of dataPost">
         <p-card (click)="navigateToDetail(item.id)">
-            <ng-template pTemplate="header">
-                <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
-            </ng-template>
-            <ng-template pTemplate="title"> {{item.name}}</ng-template>
-            <ng-template pTemplate="subtitle"> {{item.slug}} </ng-template>
-            <p>
-                {{item.description}}
-            </p>
-            <ng-template pTemplate="footer">
-                <div class="flex gap-4 mt-1">
-                    <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" />
-                    <p-button  label="Save" class="w-full" styleClass="w-full" />
-                </div>
-            </ng-template>
+          <ng-template pTemplate="header">
+            <img alt="Card" class="w-full h-44" [src]="item.thumbnail" />
+          </ng-template>
+          <ng-template pTemplate="title">
+            <p class="truncate">{{ item.name }}</p>
+          </ng-template>
+          <p class="overflow-hidden text-ellipsis whitespace-normal h-[3rem] leading-[1.5rem]">
+            {{ item.description }}
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span
+              *ngFor="let tag of item.tags"
+              class="bg-slate-400 px-2 py-1 rounded text-white cursor-pointer"
+            >
+              {{ tag }}
+            </span>
+          </div>
+          <ng-template pTemplate="footer">
+            <div class="flex gap-4 mt-1">
+              <div class="flex flex-row gap-1">
+                <i class="pi pi-eye mt-1"></i>
+                <p class="">{{ item.viewCount }}</p>
+              </div>
+              <div class="flex flex-row gap-1">
+                <i class="pi pi-comment mt-1"></i>
+                <p class="">{{ item.viewCount }}</p>
+              </div>
+              <div class="flex flex-row gap-1">
+                <i class="pi pi-thumbs-up mt-1"></i>
+                <p class="">{{ item.viewCount }}</p>
+              </div>
+            </div>
+          </ng-template>
         </p-card>
-    }
-</div>
+      </ng-container>
+    </div>
+  
+    <!-- Paginator -->
+    <p-paginator [rows]="pageSize" [totalRecords]="totalCount" (onPageChange)="pageChanged($event)"
+        [rowsPerPageOptions]="[10, 20, 50, 100]"></p-paginator>
+  </div>
+  

@@ -35,18 +35,47 @@ namespace Blog.Api.Controllers.UserApi
         [HttpGet("tag/{tagSlug}")]
         public async Task<IActionResult> ListByTag([FromRoute] string tagSlug, [FromQuery] int page = 1)
         {
-            var posts = await _unitOfWork.Posts.GetPostByTagPaging(tagSlug, page, 2);
+            var pagedResult = await _unitOfWork.Posts.GetPostByTagPaging(tagSlug, page, 2);
             var tag = await _unitOfWork.Tags.GetBySlug(tagSlug);
 
             if (tag == null)
                 return NotFound(new { Message = "Tag not found" });
 
+            // Truy xuất danh sách các bài viết từ PagedResult
+            var posts = pagedResult.Results;
+
+            // Sử dụng Task.WhenAll để lấy tags đồng thời cho từng bài viết
+            var postsWithTagsTasks = posts.Select(post =>
+            {
+                return _unitOfWork.Posts.GetTagsByPostId(post.Id).ContinueWith(task =>
+                {
+                    var postTags = task.Result;
+                    return new
+                    {
+                        post.Id,
+                        post.Name,
+                        post.Description,
+                        post.Thumbnail,
+                        post.DateCreated,
+                        post.AuthorName,
+                        post.ViewCount,
+                        Tags = postTags 
+                    };
+                });
+            });
+
+            // Chạy tất cả các task đồng thời
+            var postsWithTags = await Task.WhenAll(postsWithTagsTasks);
+
             return Ok(new
             {
-                Posts = posts,
+                Posts = postsWithTags,
                 Tag = tag
             });
         }
+
+
+
 
         [HttpGet("post/{slug}")]
         public async Task<IActionResult> Details([FromRoute] string slug)

@@ -59,6 +59,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 // Add services to the container.
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(RepositoryBase<,>));
 builder.Services.AddScoped<IUnitofWork,UnitOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 // Business services and repositories
 var services = typeof(PostRepository).Assembly.GetTypes()
@@ -89,6 +90,14 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddScoped<IRoyaltyService, RoyaltyService>();
 
+
+//Custom setup
+builder.Services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"));
+builder.Services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+
+builder.Services.AddIdentityCore<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<BlogContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
 //Default config for ASP.NET Core
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -142,7 +151,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-    .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+    .WithOrigins("http://localhost:4200", "http://localhost:65514"));
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

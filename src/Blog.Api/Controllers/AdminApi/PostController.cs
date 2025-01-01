@@ -29,7 +29,6 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpPost]
-        [Authorize(Posts.Create)]
         public async Task<IActionResult> CreatePost([FromBody] CreateUpdatePostRequest request)
         {
             if (await _unitOfWork.Posts.IsSlugAlreadyExisted(request.Slug))
@@ -95,6 +94,7 @@ namespace Blog.Api.Controllers.AdminApi
                 post.CategoryName = category.Name;
                 post.CategorySlug = category.Slug;
             }
+
             _mapper.Map(request, post);
 
             //Process tag
@@ -109,14 +109,9 @@ namespace Blog.Api.Controllers.AdminApi
                     {
                         tagId = Guid.NewGuid();
                         _unitOfWork.Tags.Add(new Tag() { Id = tagId, Name = tagName, Slug = tagSlug });
+                        await _unitOfWork.Posts.AddTagToPost(id, tagId);
 
                     }
-                    else
-                    {
-                        tagId = tag.Id;
-                    }
-                    await _unitOfWork.Posts.AddTagToPost(id, tagId);
-
                 }
             }
             await _unitOfWork.CompleteAsync();
@@ -156,25 +151,20 @@ namespace Blog.Api.Controllers.AdminApi
 
         [HttpGet]
         [Route("paging")]
-       /* [Authorize(Posts.View)]*/
         public async Task<ActionResult<PagedResult<PostInListDto>>> GetPostsPaging(string? keyword, Guid? categoryId,
             int pageIndex, int pageSize = 10)
         {
-            var userId = User.GetUserId();
-            var result = await _unitOfWork.Posts.GetAllPaging(keyword, userId, categoryId, pageIndex, pageSize);
+            var result = await _unitOfWork.Posts.GetAllPaging(keyword, categoryId, pageIndex, pageSize);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("series-belong/{postId}")]
-        [Authorize(Posts.View)]
         public async Task<ActionResult<List<SeriesInListDto>>> GetSeriesBelong(Guid postId)
         {
             var result = await _unitOfWork.Posts.GetAllSeries(postId);
             return Ok(result);
         }
-
-
 
         [HttpGet("approve/{id}")]
         public async Task<IActionResult> ApprovePost(Guid id)
@@ -202,7 +192,6 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpGet("return-reason/{id}")]
-        [Authorize(Posts.Approve)]
         public async Task<ActionResult<string>> GetReason(Guid id)
         {
             var note = await _unitOfWork.Posts.GetReturnReason(id);
@@ -210,7 +199,6 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpGet("activity-logs/{id}")]
-        [Authorize(Posts.Approve)]
         public async Task<ActionResult<List<PostActivityLogDto>>> GetActivityLogs(Guid id)
         {
             var logs = await _unitOfWork.Posts.GetActivityLogs(id);
@@ -218,7 +206,6 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpGet("tags")]
-        [Authorize(Posts.View)]
         public async Task<ActionResult<List<string>>> GetAllTags()
         {
             var logs = await _unitOfWork.Posts.GetAllTags();
@@ -226,7 +213,6 @@ namespace Blog.Api.Controllers.AdminApi
         }
 
         [HttpGet("tags/{postId}")]
-        [Authorize(Posts.View)]
         public async Task<ActionResult<List<string>>> GetPostTags(Guid postId)
         {
             var tagNames = await _unitOfWork.Posts.GetTagsByPostId(postId);

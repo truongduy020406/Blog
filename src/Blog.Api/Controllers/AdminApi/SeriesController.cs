@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Blog.Api.Extensions;
 
 namespace Blog.Api.Controllers.AdminApi
 {
@@ -25,8 +26,9 @@ namespace Blog.Api.Controllers.AdminApi
         [Authorize(Permissions.Series.Create)]
         public async Task<IActionResult> CreateSeries([FromBody] CreateUpdateSeriesRequest request)
         {
+            var userId = User.GetUserId();
             var post = _mapper.Map<CreateUpdateSeriesRequest, Core.Domain.Content.Series>(request);
-
+            post.AuthorUserId = userId;
             _unitOfWork.Series.Add(post);
 
             var result = await _unitOfWork.CompleteAsync();
@@ -129,6 +131,18 @@ namespace Blog.Api.Controllers.AdminApi
             int pageIndex, int pageSize = 10)
         {
             var result = await _unitOfWork.Series.GetAllPaging(keyword, pageIndex, pageSize);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("byuser")]
+        [Authorize(Permissions.Series.View)]
+        public async Task<ActionResult<PagedResult<SeriesInListDto>>> GetSeriesUserPaging(string? keyword,
+         int pageIndex, int pageSize = 10)
+        {
+            var userId = User.GetUserId();
+            var result = await _unitOfWork.Series.GetSeriesUserPaging(keyword, userId, pageIndex, pageSize);
 
             return Ok(result);
         }

@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './Layout/header/header.component';
-import { PostsComponent } from './Views/Content/posts/posts.component';
+
+import { ToastModule } from 'primeng/toast';
+import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FooterComponent } from "./Layout/footer/footer.component";
 
 @Component({
   selector: 'app-root',
@@ -9,11 +13,15 @@ import { PostsComponent } from './Views/Content/posts/posts.component';
   imports: [
     RouterOutlet,
     HeaderComponent,
-    PostsComponent
-  ],
+    ToastModule,
+    DynamicDialogModule,
+    ConfirmDialogModule,
+    FooterComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Client';
+
 }

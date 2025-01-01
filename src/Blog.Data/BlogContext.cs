@@ -4,7 +4,9 @@ using Blog.Core.Domain.Royalty;
 using Blog.Core.SeedWorks.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Blog.Data
 {
@@ -23,6 +25,9 @@ namespace Blog.Data
         public DbSet<PostInSeries> PostInSeries { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,6 +43,11 @@ namespace Blog.Data
 
             builder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens")
                .HasKey(x => new { x.UserId });
+            builder.Entity<Answer>()
+           .HasOne(a => a.ParentAnswer)
+           .WithMany(a => a.Replies)
+           .HasForeignKey(a => a.ParentAnswerId)
+           .OnDelete(DeleteBehavior.Restrict);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

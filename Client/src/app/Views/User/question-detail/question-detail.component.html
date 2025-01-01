@@ -1,0 +1,55 @@
+<form class="form-horizontal form-label-left" [formGroup]="form" (ngSubmit)="saveChange()">
+    <p-panel #pnlDetail header="Thông tin" [toggleable]="true" [collapsed]="false">
+      <div class="formgrid grid">
+  
+     
+ 
+        <!-- Mô tả ngắn -->
+        <div class="field col-12">
+          <label for="title" class="block text-sm font-medium text-gray-700">
+            Mô tả ngắn <span class="text-red-500">*</span>
+          </label>
+          <textarea
+            id="title"
+            rows="4"
+            class="mt-1 block w-full border border-black rounded-sm p-1 "
+            formControlName="title"
+          ></textarea>
+          <app-validation-message [entityForm]="form" fieldName="title" [validationMessages]="validationMessages"></app-validation-message>
+        </div>
+  
+
+  
+  
+  
+        <!-- Nội dung -->
+        <div class="field col-12">
+          <label for="content" class="block text-sm font-medium text-gray-700">Nội dung</label>
+          <p-editor formControlName="content" [style]="{ height: '320px' }"></p-editor>
+        </div>
+  
+    
+  
+ 
+      </div>
+  
+      <ng-template pTemplate="footer">
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          [disabled]="!form.valid || btnDisabled"
+        >
+          Lưu
+        </button>
+      </ng-template>
+  
+      <p-blockUI [target]="pnlDetail" [blocked]="blockedPanelDetail">
+        <p-progressSpinner
+          [style]="{ width: '100px', height: '100px', position: 'absolute', top: '25%', left: '50%' }"
+          strokeWidth="2"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </p-blockUI>
+    </p-panel>
+  </form>
+  

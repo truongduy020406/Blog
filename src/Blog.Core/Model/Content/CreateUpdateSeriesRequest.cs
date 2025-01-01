@@ -32,6 +32,7 @@ namespace Blog.Core.Model.Content
         [MaxLength(250)]
         public string? Thumbnail { set; get; }
 
+        public Guid AuthorUserId { get; set; }
         public string? Content { get; set; }
         public class AutoMapperProfiles : Profile
         {

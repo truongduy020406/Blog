@@ -36,6 +36,7 @@ namespace Blog.Data
                     UserName = "admin",
                     NormalizedUserName = "ADMIN",
                     IsActive = true,
+                    EmailConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString(),
                     LockoutEnabled = false,
                     DateCreated = DateTime.Now

@@ -33,6 +33,7 @@ export class PostService {
   createPost(body?: CreateUpdatePostRequest | undefined): Observable<void> {
     let url_ = this.baseUrl + "/api/admin/post";
     url_ = url_.replace(/[?&]$/, "");
+    console.log(body)
     return this.http.post<void> ( url_, body)
   }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Blog.Core.Domain.Content;
 
 namespace Blog.Core.Domain.Identity
 {
@@ -27,6 +28,8 @@ namespace Blog.Core.Domain.Identity
         public DateTime? LastLoginDate { get; set; }
         public double Balance { get; set; }
         public double RoyaltyAmountPerPost { get; set; }
+        public ICollection<Question> Questions { get; set; }
+        public ICollection<Answer> Answers { get; set; }
         public string GetFullName()
         {
             return this.FirstName + " " + this.LastName;

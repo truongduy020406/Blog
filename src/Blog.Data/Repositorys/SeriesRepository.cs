@@ -56,6 +56,29 @@ namespace Blog.Data.Repositorys
                 PageSize = pageSize
             };
         }
+        public async Task<PagedResult<SeriesInListDto>> GetSeriesUserPaging(string? keyword, Guid userId, int pageIndex = 1, int pageSize = 10)
+        {
+            var query = _context.Series.Where(x => x.AuthorUserId == userId)
+                .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(x => x.Name.Contains(keyword));
+            }
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PagedResult<SeriesInListDto>
+            {
+                Results = await _mapper.ProjectTo<SeriesInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+        }
 
         public async Task<List<PostInListDto>> GetAllPostsInSeries(Guid seriesId)
         {

@@ -189,7 +189,7 @@ export class SeriesDetailComponent {
       description: new FormControl(this.selectedEntity.description || null, Validators.required),
       seoDescription: new FormControl(this.selectedEntity.seoDescription || null),
       content: new FormControl(this.selectedEntity.content || null),
-      isActive: new FormControl(this.selectedEntity.isActive || null),
+      isActive: new FormControl(this.selectedEntity.isActive ?? false),
       thumbnail: new FormControl(
         this.selectedEntity.thumbnail || null
       ),
