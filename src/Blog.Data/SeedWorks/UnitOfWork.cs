@@ -26,7 +26,8 @@ namespace Blog.Data.SeedWorks
             Tags = new TagRepository(context, mapper);
             Transactions = new TransactionRepository(context, mapper);
             Users = new UserRepository(context);
-            
+            Question = new QuestionRepository(context, mapper , userManager);
+            Answer = new AnswerRepository(context, mapper, userManager);
 
 
         }
@@ -37,6 +38,11 @@ namespace Blog.Data.SeedWorks
         public ITagRepository Tags {  get; private set; }
         public ITransactionRepository Transactions { get; private set; }
         public IUserRepository Users { get; private set; }
+
+        public IQuestionRepository Question { get; private set; }
+
+        public IAnswerRepository Answer { get; private set; }
+
         public async Task<int> CompleteAsync()
         {
             return await _context.SaveChangesAsync();

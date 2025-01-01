@@ -1,4 +1,4 @@
-<div class="grid grid-cols-8 gap-5">
+<div class="container mx-auto max-w-[1280px] grid grid-cols-8 gap-5 mt-10">
   <!-- Menu panel bên trái -->
   <div class="col-span-2">
     <p-panelMenu
@@ -224,47 +224,50 @@
       </div>
     </div>
     <div *ngIf="selectedTab === 'Bản nháp'">
-        <div class="flex flex-col space-y-4">
-          <div
-            *ngFor="let post of postPrivate"
-            class="flex items-center justify-between p-4 border border-gray-300 rounded-lg shadow-sm"
-          >
-            <!-- Nội dung bài viết -->
-            <div class="flex-1">
-              <h3 class="font-semibold text-lg text-gray-800">{{ post.name }}</h3>
-              <p class="text-sm text-gray-600">{{ post.description }}</p>
-              <p class="text-xs text-gray-500">
-                By {{ post.authorName }} | Created:
-                {{ post.dateCreated | date : "short" }}
-              </p>
-            </div>
-  
-            <!-- Nút Sửa và Xoá -->
-            <div class="flex space-x-2">
-              <button
-                pButton
-                type="button"
-                label="Đăng"
-                icon="pi pi-pencil"
-                class="p-button-sm p-button-warning"
-              ></button>
-              <button
+      <div class="flex flex-col space-y-4">
+        <div
+          *ngFor="let post of postPrivate"
+          class="flex items-center justify-between p-4 border border-gray-300 rounded-lg shadow-sm"
+        >
+          <!-- Nội dung bài viết -->
+          <div class="flex-1">
+            <h3 class="font-semibold text-lg text-gray-800">{{ post.name }}</h3>
+            <p class="text-sm text-gray-600">{{ post.description }}</p>
+            <p class="text-xs text-gray-500">
+              By {{ post.authorName }} | Created:
+              {{ post.dateCreated | date : "short" }}
+            </p>
+          </div>
+
+          <!-- Nút Sửa và Xoá -->
+          <div class="flex space-x-2">
+            <button
+              pButton
+              type="button"
+              label="Đăng"
+              icon="pi pi-pencil"
+              class="p-button-sm p-button-warning"
+            ></button>
+            <button
               pButton
               type="button"
               label="Sửa"
               icon="pi pi-pencil"
               class="p-button-sm p-button-warning"
             ></button>
-              <button
-                pButton
-                type="button"
-                label="Xoá"
-                icon="pi pi-trash"
-                class="p-button-sm p-button-danger"
-              ></button>
-            </div>
+            <button
+              pButton
+              type="button"
+              label="Xoá"
+              icon="pi pi-trash"
+              class="p-button-sm p-button-danger"
+            ></button>
           </div>
         </div>
       </div>
+    </div>
+    <div *ngIf="selectedTab === 'Câu hỏi'">
+        <app-question></app-question>
+    </div>
   </div>
 </div>

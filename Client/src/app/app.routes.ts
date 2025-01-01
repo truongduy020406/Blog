@@ -15,7 +15,7 @@ export const routes: Routes = [
     loadChildren: () => import('./Views/Auth/router').then((m) => m.routes)
   },
   {
-    path: 'post',
+    path: 'content',
     loadChildren: () => import('./Views/Content/router').then((m) => m.routes)
   },
   {

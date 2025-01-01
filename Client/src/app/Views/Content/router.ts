@@ -7,7 +7,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: '',
+    path: 'post',
     loadComponent: () =>
       import('./posts/posts.component').then((m) => m.PostsComponent),
     data: {
@@ -15,7 +15,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'detail/:id',
+    path: 'postdetail/:id',
     loadComponent: () =>
       import('./post-detail/post-detail.component').then((m) => m.PostDetailComponent),
     data: {
@@ -27,6 +27,29 @@ export const routes: Routes = [
       import('./new-post/new-post.component').then((m) => m.NewPostComponent),
     data: {
       title: 'new Post',
+    },
+  },{
+    path: 'allQuestion',
+    loadComponent: () =>
+      import('./all-question/all-question.component').then((m) => m.AllQuestionComponent),
+    data: {
+      title: 'all Question',
+    },
+  },
+  {
+    path: 'QuestionC',
+    loadComponent: () =>
+      import('./all-question/all-question.component').then((m) => m.AllQuestionComponent),
+    data: {
+      title: 'all Question',
+    },
+  },
+  {
+    path: 'QuestionC/:id',
+    loadComponent: () =>
+      import('./question-client-detail/question-client-detail.component').then((m) => m.QuestionClientDetailComponent),
+    data: {
+      title: 'Question Client',
     },
   },
   

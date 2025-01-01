@@ -54,6 +54,30 @@ namespace Blog.Data.Repositorys
 
         }
 
+        public async Task<PagedResult<PostInListDto>> GetPostByUserPaging(string? keyword, Guid userId, int pageIndex = 1, int pageSize = 10)
+        {
+
+            var query = _context.Posts.Where(x => x.AuthorUserId == userId)
+                .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(x => x.Name.Contains(keyword));
+            }
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PagedResult<PostInListDto>
+            {
+                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+        }
         public async Task<List<SeriesInListDto>> GetAllSeries(Guid postId)
         {
             var query = from pis in _context.PostInSeries
@@ -68,7 +92,7 @@ namespace Blog.Data.Repositorys
         {
             return _context.Posts.OrderByDescending(d => d.ViewCount).Take(count).ToList();
         }
-
+    
         public Task<bool> IsSlugAlreadyExisted(string slug, Guid? currentId = null)
         {
             if (currentId.HasValue)
@@ -284,29 +308,8 @@ namespace Blog.Data.Repositorys
             return await _mapper.ProjectTo<TagDto>(query).ToListAsync();
         }
 
-        public async Task<PagedResult<PostInListDto>> GetPostByUserPaging(string keyword, Guid userId, int pageIndex = 1, int pageSize = 10)
-        {
+       
 
-            var query = _context.Posts.Where(x => x.AuthorUserId == userId)
-                .AsQueryable();
-            if (!string.IsNullOrWhiteSpace(keyword))
-            {
-                query = query.Where(x => x.Name.Contains(keyword));
-            }
-
-            var totalRow = await query.CountAsync();
-
-            query = query.OrderByDescending(x => x.DateCreated)
-               .Skip((pageIndex - 1) * pageSize)
-               .Take(pageSize);
-
-            return new PagedResult<PostInListDto>
-            {
-                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
-                CurrentPage = pageIndex,
-                RowCount = totalRow,
-                PageSize = pageSize
-            };
-        }
+       
     }
 }

@@ -23,8 +23,6 @@ export class AuthService {
     return this.http.post<AuthenticatedResult>(url_, body).pipe(
       map((res:any)=> {
         this.currentUser.set(res);
-        console.log(this.currentUser())
-        
         return res;
       })
     )

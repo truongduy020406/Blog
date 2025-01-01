@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ADMIN_API_BASE_URL } from '../../Auth/Service/auth.service';
 import { changePassword } from '../Models/changePW.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class ProfileService {
     return this.http.get(url_);
   }
   
-
+ 
   changePassword(data:changePassword){
     let url_ = this.baseUrl + '/profile/change-password';
     return this.http.put(url_,data, {

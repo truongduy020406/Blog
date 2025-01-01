@@ -13,59 +13,96 @@ import { environment } from '../../../environments/environment';
 import { forkJoin, map } from 'rxjs';
 import { PostInListDto } from '../../Views/Content/Model/PostInListDto.model';
 import { Router } from '@angular/router';
+import { QuestionService } from '../../Views/User/Services/question.service';
+import { questionDTO } from '../../Views/User/Models/question.model';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [DataViewModule,
-    TagModule,
-    ButtonModule,
-    CommonModule,
-    DatePipe
-  ],
+  imports: [DataViewModule, TagModule, ButtonModule, CommonModule, DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomeComponent implements OnInit {
   dataPost: PostInListDto[] = [];
+  dataPostPopular: PostInListDto[] = [];
+
+  pageIndex: number = 1;
+  pageSize: number = 10;
+  totalCount?: number;
+  dataQuestion: questionDTO[] = [];
   private postService = inject(PostService);
-   private router = inject(Router)
+  private router = inject(Router);
+  private questionService = inject(QuestionService);
+
   ngOnInit(): void {
+    this.loadQuestion();
+    this.loadData();
+    this.getPostPopular();
+  }
+
+  loadQuestion() {
+    this.questionService.getLastQuestion().subscribe((res) => {
+      this.dataQuestion = res;
+      console.log('1', this.dataQuestion);
+    });
+  }
+  loadData() {
     this.postService.getPostsPaging('', '', 1, 10).subscribe((res) => {
-      this.dataPost = res.results.filter(data => data.status === 3);
-      
-      const postsWithTags$ = this.dataPost.map(post => {
+      this.dataPost = res.results.filter((data) => data.status === 3);
+      this.totalCount = this.dataPost.length;
+      const postsWithTags$ = this.dataPost.map((post) => {
         return this.postService.getPostTags(post.id).pipe(
-          map(tags => ({
+          map((tags) => ({
             ...post,
             tags, // Gắn thêm trường tags
-            thumbnail: environment.API_URL + post.thumbnail
+            thumbnail: environment.API_URL + post.thumbnail,
           }))
         );
       });
-  
-      forkJoin(postsWithTags$).subscribe(postsWithTags => {
+
+      forkJoin(postsWithTags$).subscribe((postsWithTags) => {
         this.dataPost = postsWithTags;
-        this.dataPost.map(data => {
-          console.log(data.tags)
-        })
+      });
+    });
+  }
+
+  getPostPopular() {
+    this.postService.getPopularProfiles(5).subscribe((res) => {
+      this.dataPostPopular = res.filter((data) => data.status === 3);
+      this.totalCount = this.dataPost.length;
+      const postsWithTags$ = this.dataPost.map((post) => {
+        return this.postService.getPostTags(post.id).pipe(
+          map((tags) => ({
+            ...post,
+            tags, // Gắn thêm trường tags
+            thumbnail: environment.API_URL + post.thumbnail,
+          }))
+        );
       });
 
-      
+      forkJoin(postsWithTags$).subscribe((postsWithTags) => {
+        this.dataPostPopular = postsWithTags;
+      });
     });
-    
   }
+  
 
-  getProductTag(tag:string){
-    this.postService.getPostsByTag(tag,1).subscribe(res => {
-      this.dataPost = res.posts
-      this.dataPost.map(data => {
-        data.thumbnail = environment.API_URL + data.thumbnail
-      })
-      console.log(this.dataPost)
-    })
+  pageChanged(event: any): void {
+    this.pageIndex = event.page + 1;
+    this.pageSize = event.rows;
+    this.loadData();
   }
-  navigateToDetail(id:string|undefined){
-    this.router.navigate([`post/detail/${id}`])
+  getProductTag(tag: string) {
+    this.postService.getPostsByTag(tag, 1).subscribe((res) => {
+      this.dataPost = res.posts;
+      this.dataPost.map((data) => {
+        data.thumbnail = environment.API_URL + data.thumbnail;
+      });
+      console.log(this.dataPost);
+    });
+  }
+  navigateToDetail(id: string | undefined) {
+    this.router.navigate([`content/postdetail/${id}`]);
   }
 }

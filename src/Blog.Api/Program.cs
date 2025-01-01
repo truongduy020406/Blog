@@ -151,7 +151,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-    .WithOrigins("http://localhost:4200", "http://localhost:54470"));
+    .WithOrigins("http://localhost:4200", "http://localhost:65514"));
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

@@ -234,6 +234,7 @@ public class AuthController : ControllerBase
         }
         else
         {
+            // Lấy quyền cho Posts
             var typePosts = typeof(Permissions.Posts).GetTypeInfo().DeclaredFields;
             foreach (var field in typePosts)
             {
@@ -246,7 +247,6 @@ public class AuthController : ControllerBase
             {
                 permissions.Add((string)field.GetValue(null));
             }
-            permissions.AddRange(allPermissions.Select(x => x.Value));
         }
         return permissions.Distinct().ToList();
     }

@@ -10,16 +10,15 @@ namespace Blog.Core.Domain.Content
 {
     public class Question
     {
-        public int QuestionId { get; set; }
+        public Guid QuestionId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string? UserName { get; set; }
 
-        public int UserId { get; set; }
-        public AppUser? User { get; set; }
+        public Guid UserId { get; set; }
 
-        // Navigation properties
-        public ICollection<Answer>? Answers { get; set; }
-        
+       
     }
+
 }

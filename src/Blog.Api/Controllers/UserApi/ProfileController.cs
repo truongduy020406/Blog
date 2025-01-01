@@ -4,6 +4,7 @@ using Blog.Core.Domain.Content;
 using Blog.Core.Domain.Identity;
 using Blog.Core.Helpers;
 using Blog.Core.Model.Client;
+using Blog.Core.Model.Content;
 using Blog.Core.SeedWorks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -101,7 +102,7 @@ namespace Blog.Api.Controllers.UserApi
         }
 
         [HttpPost("/profile/posts/create")]
-        public async Task<IActionResult> CreatePost([FromBody] CreatePostViewModel model, [FromForm] IFormFile thumbnail)
+        public async Task<IActionResult> CreatePost([FromBody] CreateUpdatePostRequest model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -114,13 +115,14 @@ namespace Blog.Api.Controllers.UserApi
 
             var post = new Post()
             {
-                Name = model.Title,
+                Name = model.Name,
                 CategoryName = category.Name,
                 CategorySlug = category.Slug,
-                Slug = TextHelper.ToUnsignedString(model.Title),
+                Slug = TextHelper.ToUnsignedString(model.Name),
                 CategoryId = model.CategoryId,
                 Content = model.Content,
                 SeoDescription = model.SeoDescription,
+                Thumbnail = model.Thumbnail,
                 Status = PostStatus.Draft,
                 AuthorUserId = user.Id,
                 AuthorName = user.GetFullName(),
@@ -130,9 +132,6 @@ namespace Blog.Api.Controllers.UserApi
 
             _unitOfWork.Posts.Add(post);
 
-            if (thumbnail != null)
-                await UploadThumbnail(thumbnail, post);
-
             int result = await _unitOfWork.CompleteAsync();
             if (result > 0)
                 return Ok("Post is created successfully");
@@ -141,41 +140,25 @@ namespace Blog.Api.Controllers.UserApi
         }
 
         [HttpGet("/profile/posts/list")]
-        public async Task<IActionResult> ListPosts(string keyword, int page = 1)
+        public async Task<IActionResult> ListPosts(string? keyword, int page = 1)
         {
-            var posts = await _unitOfWork.Posts.GetPostByUserPaging(keyword, User.GetUserId(), page, 12);
-            return Ok(new ListPostByUserViewModel()
-            {
-                Posts = posts
-            });
+            var userId = User.GetUserId();
+            var posts = await _unitOfWork.Posts.GetPostByUserPaging(keyword, userId , page, 10);
+            return Ok(posts);
         }
 
-        private async Task UploadThumbnail(IFormFile thumbnail, Post post)
+        [HttpGet("popular")]
+        public IActionResult GetPopularPosts([FromQuery] int count = 5)
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri(_config.BackendApiUrl);
-
-                byte[] data;
-                using (var br = new BinaryReader(thumbnail.OpenReadStream()))
-                {
-                    data = br.ReadBytes((int)thumbnail.OpenReadStream().Length);
-                }
-
-                var bytes = new ByteArrayContent(data);
-
-                var multiContent = new MultipartFormDataContent
+                var posts = _unitOfWork.Posts.GetPopularPosts(count);
+                return Ok(posts);
+            }
+            catch (Exception ex)
             {
-                { bytes, "file", thumbnail.FileName }
-            };
-
-                var uploadResult = await client.PostAsync("api/admin/media?type=posts", multiContent);
-                if (uploadResult.StatusCode != HttpStatusCode.OK)
-                    throw new Exception(await uploadResult.Content.ReadAsStringAsync());
-
-                var path = await uploadResult.Content.ReadAsStringAsync();
-                var pathObj = JsonSerializer.Deserialize<UploadResponse>(path);
-                post.Thumbnail = pathObj?.Path;
+                // Log the exception (if needed)
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching popular posts.");
             }
         }
 

@@ -131,4 +131,21 @@ export class SeriesService {
 
     return this.http.delete( url_, options_)
   }
+  getSeriesUserPaging(keyword?: string | null | undefined, pageIndex?: number | undefined, 
+    pageSize?: number | undefined): Observable<SeriesInListDtoPagedResult> {
+    let url_ = this.baseUrl + "/api/admin/series/byuser?";
+    if (keyword !== undefined && keyword !== null)
+        url_ += "keyword=" + encodeURIComponent("" + keyword) + "&";
+    if (pageIndex === null)
+        throw new Error("The parameter 'pageIndex' cannot be null.");
+    else if (pageIndex !== undefined)
+        url_ += "pageIndex=" + encodeURIComponent("" + pageIndex) + "&";
+    if (pageSize === null)
+        throw new Error("The parameter 'pageSize' cannot be null.");
+    else if (pageSize !== undefined)
+        url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    return this.http.get<SeriesInListDtoPagedResult>( url_);
+  }
 }

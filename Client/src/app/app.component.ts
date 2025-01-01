@@ -5,6 +5,8 @@ import { HeaderComponent } from './Layout/header/header.component';
 import { ToastModule } from 'primeng/toast';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FooterComponent } from "./Layout/footer/footer.component";
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,11 +15,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     HeaderComponent,
     ToastModule,
     DynamicDialogModule,
-    ConfirmDialogModule
-  ],
+    ConfirmDialogModule,
+    FooterComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Client';
+
 }

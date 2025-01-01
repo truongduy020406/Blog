@@ -121,11 +121,13 @@ export class NewPostComponent implements OnInit {
           //Push categories to dropdown list
           this.tags = repsonse.tags as string[];
 
-          const categories = repsonse.categories as PostCategoryDto[];
-          this.postCategories = categories.map((element) => ({
-            code: element.id, // Assuming `id` is the correct key for code
-            name: element.name // Assuming `name` is the correct key for name
-          }));
+          var categories = repsonse.categories as PostCategoryDto[];
+          categories.forEach((element) => {
+            this.postCategories.push({
+              value: element.id,
+              label: element.name,
+            });
+          });
 
           console.log(this.postCategories);
         },
@@ -156,9 +158,20 @@ export class NewPostComponent implements OnInit {
   }
 
   private saveData() {
+    const data:PostDto = {
+      categoryId:this.form.value.categoryId.value,
+      content:this.form.value.content,
+      description:this.form.value.description,
+      name:this.form.value.name,
+      seoDescription:this.form.value.seoDescription,
+      slug:this.form.value.slug,
+      tags:this.form.value.tags,
+      thumbnail:this.form.value.thumbnail
+    }
+    console.log(data)
     this.toggleBlockUI(true);
     this.postApiClient
-      .createPost(this.form.value)
+      .createPost(data)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: () => {

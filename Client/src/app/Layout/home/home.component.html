@@ -1,7 +1,10 @@
-<div class="grid grid-cols-10 gap-4 mt-10">
-  <!-- p-dataView div chiếm 8 phần -->
+<div>
+  <img src="https://localhost:7060/media/images/posts/122024/headerhome.png" alt="Girl in a jacket" class="w-full h-96">
+</div>
+<div class="container mx-auto max-w-[1280px] grid grid-cols-10 gap-4 mt-10 shadow-md">
   <div class="col-span-6">
-    <p-dataView #dv [value]="dataPost" [rows]="5" [paginator]="true" >
+    <h1 class="text-2xl text-blue-400 mb-2">Bài viết mới nhất</h1>
+    <p-dataView #dv [value]="dataPost" [rows]="4" [paginator]="true" >
       <ng-template let-collection pTemplate="list">
         <div class="space-y-6">
           <div
@@ -10,7 +13,7 @@
             
           >
             <!-- Thumbnail -->
-            <div class="relative w-1/4 h-32" (click)="navigateToDetail(item.id)">
+            <div *ngIf="item.thumbnail" class="relative w-1/4 h-32" (click)="navigateToDetail(item.id)">
                 
               <img
                 class="w-full h-full object-cover"
@@ -47,10 +50,82 @@
         </div>
       </ng-template>
     </p-dataView>
+  
   </div>
-
+  
   <!-- Div chiếm 2 phần -->
   <div class="col-span-4">
-    <h1>Test câu hỏi</h1>
+    <h1 class="text-2xl text-blue-400 mb-2">Câu hỏi mới nhất</h1>
+    <p-dataView #dv [value]="dataQuestion"  >
+      <ng-template let-collection pTemplate="list">
+        <div class="space-y-6">
+          <div
+            *ngFor="let item of collection"
+            class="flex flex-row bg-white rounded-lg shadow-lg overflow-hidden"
+            
+          >
+            <!-- Content -->
+            <div class="p-4">
+              <div class="flex flex-row gap-5">
+                <div class="text-xs font-medium text-gray-800 truncate">
+                  By <span class="font-semibold">{{ item.userName }}</span> on
+                  {{ item.createdAt | date : "medium" }}
+                </div>
+              </div>
+
+              <div class="pt-4">
+                <span>{{ item.title }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+</div>
+
+
+<div class="container mx-auto max-w-screen-xl mt-10 shadow-md">
+  <h1 class="text-2xl text-blue-400 mb-2">Bài viết nổi bật</h1>
+  <div class="grid grid-cols-1 gap-4 mt-4 w-full">
+    <p-dataView
+      #dv
+      [value]="dataPostPopular"
+      [rows]="5"
+      [paginator]="true"
+      class="w-full" 
+    >
+      <ng-template let-collection pTemplate="list">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+          <div
+            *ngFor="let item of collection"
+            class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col"
+          >
+            <div *ngIf="item.thumbnail" class="relative w-full h-48" (click)="navigateToDetail(item.id)">
+              <img
+                class="w-full h-full object-cover"
+                [src]="item.thumbnail"
+                alt="Thumbnail"
+              />
+            </div>
+
+            <div class="p-4 flex-grow flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-medium text-gray-800 truncate">
+                  By <span class="font-semibold">{{ item.authorName }}</span> on
+                  {{ item.dateCreated | date: "medium" }}
+                </div>
+
+                <div class="pt-4">
+                  <span>{{ item.description }}</span>
+                </div>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
   </div>
 </div>

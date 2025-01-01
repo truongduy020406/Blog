@@ -8,11 +8,14 @@ import { FormsModule } from '@angular/forms';
 import { MarkdownComponent } from 'ngx-markdown';
 import TurndownService from 'turndown';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-
 @Component({
   selector: 'app-post-detail',
   standalone: true,
-  imports: [CardModule, DatePipe, MarkdownComponent, FormsModule],
+  imports: [CardModule,
+    DatePipe, 
+    MarkdownComponent,
+    FormsModule,
+    ],
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss',
 })
@@ -37,8 +40,9 @@ export class PostDetailComponent implements OnInit {
       let markdownContent = this.turndownService.turndown(content);
 
       this.dataPost.content = markdownContent
-        .replace(/\\`\\`\\`/g, '```')
-        .replace(/\n\s*\n/g, '\n');
+      .replace(/\\`\\`\\`/g, '```')
+      .replace(/\n\s*\n/g, '\n');
+   
     });
 
     this.postService.getAllTags().subscribe((res: any) => {

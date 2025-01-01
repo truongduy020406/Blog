@@ -12,7 +12,7 @@ import { AlertService } from './Shared/Service/alert.service';
 import { AuthGuard } from './Shared/auth.guard';
 import { UtilityService } from './Shared/Service/utility.service';
 import { provideMarkdown } from 'ngx-markdown';
-import TurndownService from 'turndown';
+
 import 'prismjs';
 import 'prismjs/components/prism-typescript.min.js';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';

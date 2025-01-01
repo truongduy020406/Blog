@@ -13,6 +13,14 @@ export const routes: Routes = [
     data: {
       title: 'user profile',
     },
+  },
+  {
+    path: 'question',
+    loadComponent: () =>
+      import('./question/question.component').then((m) => m.QuestionComponent),
+    data: {
+      title: 'question',
+    },
   }
   
 ];

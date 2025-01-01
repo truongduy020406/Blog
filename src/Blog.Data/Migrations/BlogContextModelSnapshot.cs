@@ -22,6 +22,42 @@ namespace Blog.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Blog.Core.Domain.Content.Answer", b =>
+                {
+                    b.Property<Guid>("AnswerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ParentAnswerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AnswerId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ParentAnswerId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("Blog.Core.Domain.Content.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -219,6 +255,39 @@ namespace Blog.Data.Migrations
                     b.HasKey("PostId", "TagId");
 
                     b.ToTable("PostTags");
+                });
+
+            modelBuilder.Entity("Blog.Core.Domain.Content.Question", b =>
+                {
+                    b.Property<Guid>("QuestionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("QuestionId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Blog.Core.Domain.Content.Series", b =>
@@ -553,6 +622,47 @@ namespace Blog.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("AppUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Blog.Core.Domain.Content.Answer", b =>
+                {
+                    b.HasOne("Blog.Core.Domain.Identity.AppUser", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Blog.Core.Domain.Content.Answer", "ParentAnswer")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentAnswerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Blog.Core.Domain.Content.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentAnswer");
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("Blog.Core.Domain.Content.Question", b =>
+                {
+                    b.HasOne("Blog.Core.Domain.Identity.AppUser", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("Blog.Core.Domain.Content.Answer", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("Blog.Core.Domain.Identity.AppUser", b =>
+                {
+                    b.Navigation("Answers");
+
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

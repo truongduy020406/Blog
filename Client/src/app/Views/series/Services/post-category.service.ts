@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ADMIN_API_BASE_URL } from '../../Auth/Service/auth.service';
 import { Observable } from 'rxjs';
-import { CreateUpdatePostCategoryRequest } from '../Model/CreateUpdatePostCategoryRequest.model'
-import { PostCategoryDto } from '../Model/PostCategoryDto.model';
-import { PostCategoryDtoPagedResult } from '../Model/PostCategoryDtoPagedResult.model'
+import { PostCategoryDto } from '../../Content/Model/PostCategoryDto.model';
+import { CreateUpdatePostCategoryRequest } from '../../Content/Model/CreateUpdatePostCategoryRequest.model';
+import { PostCategoryDtoPagedResult } from '../../Content/Model/PostCategoryDtoPagedResult.model';
+
 @Injectable({
   providedIn: 'root'
 })

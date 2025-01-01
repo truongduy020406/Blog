@@ -33,7 +33,8 @@ export class PostService {
   } 
 
   createPost(body?: CreateUpdatePostRequest | undefined): Observable<void> {
-    let url_ = this.baseUrl + "/api/admin/post";
+    console.log(body)
+    let url_ = this.baseUrl + "/profile/posts/create";
     url_ = url_.replace(/[?&]$/, "");
     return this.http.post<void> ( url_, body)
   }
@@ -84,6 +85,28 @@ export class PostService {
     url_ = url_.replace(/[?&]$/, "");
     return this.http.get<SeriesInListDto[]>( url_)
   }
+
+
+  getPostsUserPaging(keyword?: string | null | undefined, categoryId?: string | null | undefined, 
+    pageIndex?: number | undefined, pageSize?: number | undefined): Observable<PostInListDtoPagedResult> {
+    let url_ = this.baseUrl + "/profile/posts/list?";
+    if (keyword !== undefined && keyword !== null)
+        url_ += "keyword=" + encodeURIComponent("" + keyword) + "&";
+    if (categoryId !== undefined && categoryId !== null)
+        url_ += "categoryId=" + encodeURIComponent("" + categoryId) + "&";
+    if (pageIndex === null)
+        throw new Error("The parameter 'pageIndex' cannot be null.");
+    else if (pageIndex !== undefined)
+        url_ += "pageIndex=" + encodeURIComponent("" + pageIndex) + "&";
+    if (pageSize === null)
+        throw new Error("The parameter 'pageSize' cannot be null.");
+    else if (pageSize !== undefined)
+        url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+
+    return this.http.get<PostInListDtoPagedResult>( url_)
+  } 
+
 
   getPostsPaging(keyword?: string | null | undefined, categoryId?: string | null | undefined, 
     pageIndex?: number | undefined, pageSize?: number | undefined): Observable<PostInListDtoPagedResult> {
@@ -154,5 +177,9 @@ export class PostService {
       .set('page', page.toString()); // Thêm tham số page vào request
 
     return this.http.get<any>(`${url_}/${tag}`, { params });
+  }
+
+  getPopularProfiles(count: number): Observable<PostInListDto[]> {
+    return this.http.get<PostInListDto[]>(`${this.baseUrl}/api/Profile/popular?count=${count}`);
   }
 }

@@ -17,8 +17,8 @@ export class HeaderComponent implements OnInit {
   authService = inject(AuthService);
   items = [
     { label: 'Trang chủ', icon: 'pi pi-home', url: '/#/' },
-    { label: 'Bài viết', icon: 'pi pi-pencil', url: '/#/post' },
-    { label: 'Hỏi đáp', icon: 'pi pi-info-circle', url: '/about' }, 
+    { label: 'Bài viết', icon: 'pi pi-pencil', url: '/#/content/post' },
+    { label: 'Hỏi đáp', icon: 'pi pi-info-circle', url: '/#/content/allQuestion' }, 
   ];
   item = [
     { label: 'Hồ sơ', icon: 'pi pi-address-book', url: '/#/user/profile' },
@@ -26,9 +26,9 @@ export class HeaderComponent implements OnInit {
   ];
 
   write = [
-    { label: 'Viết bài', icon: 'pi pi-home', url: '/#/post/newpost' },
+    { label: 'Viết bài', icon: 'pi pi-home', url: '/#/content/newpost' },
     { label: 'Series mới', icon: 'pi pi-file-word', url: '/#/series' },
-    { label: 'Câu hỏi', icon: 'pi pi-question-circle', url: '/#/register' },
+    { label: 'Câu hỏi', icon: 'pi pi-question-circle', url: '/#/user/question' },
 
   ];
   ngOnInit(): void {

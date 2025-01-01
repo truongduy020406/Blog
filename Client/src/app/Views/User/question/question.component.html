@@ -1,0 +1,120 @@
+<div class="container mx-auto max-w-[1280px]">
+    <p-panel #pnl [style]="{ 'margin-bottom': '10px' }">
+  
+      <p-header class="text-xl"> Quản lý câu hỏi</p-header>
+  
+      <div class=" flex flex-row justify-between max-h-14">
+        <div class="flex flex-row gap-5">
+          <p-button
+            appPermission
+            appPolicy="Permissons.Series.Create"
+            pButton
+            type="button"
+            label="Thêm"
+            icon="fa fa-plus"
+            (click)="showAddModal()"
+            class="p-button-sm ms-1 p-button-info"
+          ></p-button>
+          <p-button
+            appPermission
+            appPolicy="Permissons.Series.Delete"
+            pButton
+            type="button"
+            label="Xóa"
+            icon="fa fa-trash"
+            class="p-button-sm p-button-danger ms-1"
+            *ngIf="selectedItems.length > 0"
+            (click)="deleteItems()"
+          ></p-button>
+          <p-button
+            appPermission
+            appPolicy="Permissons.Series.Edit"
+            pButton
+            type="button"
+            label="Sửa"
+            icon="fa fa-edit"
+            class="p-button-sm ms-1 p-button-help"
+            *ngIf="selectedItems.length == 1"
+            (click)="showEditModal()"
+          ></p-button>
+
+        </div>
+        <div class="flex flex-row justify-center gap-5">
+          <div class="row">
+            <div class="col">
+              <input
+                id="txtKeyword"
+                pInputText
+                (keyup.enter)="loadData()"
+                [(ngModel)]="keyword"
+                placeholder="Nhập từ khóa..."
+                type="text"
+                class="p-4 border border-black"
+              />
+            </div>
+            
+          </div>
+          <div class="col">
+            <p-button type="button" pButton (click)="loadData()">Tìm</p-button>
+          </div>
+        </div>
+       
+      </div>
+      <div class="row mt-3">
+        <p-table
+        #dt
+        [value]="items"
+        selectionMode="multiple"
+        dataKey="id"
+        [(selection)]="selectedItems"
+        [metaKeySelection]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 10px">
+              <p-tableHeaderCheckbox class="border border-gray-300 rounded"></p-tableHeaderCheckbox>
+  
+            </th>
+            <th>Tiêu đề</th>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr [pSelectableRow]="row">
+            <td style="width: 10px">
+              <span class="ui-column-title"></span>
+              <p-tableCheckbox  [value]="row"></p-tableCheckbox>
+              
+            </td>
+            <td>{{ row.title }}</td>
+          
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div style="text-align: left">Tổng số: {{ totalCount | number }}</div>
+        </ng-template>
+      </p-table>
+      </div>
+      <p-paginator
+        [rows]="pageSize"
+        [totalRecords]="totalCount"
+        (onPageChange)="pageChanged($event)"
+        [rowsPerPageOptions]="[10, 20, 50, 100]"
+      ></p-paginator>
+    
+      <p-blockUI [target]="pnl" [blocked]="blockedPanel">
+        <p-progressSpinner
+          [style]="{
+            width: '100px',
+            height: '100px',
+            position: 'absolute',
+            top: '25%',
+            left: '50%'
+          }"
+          strokeWidth="2"
+          animationDuration=".5s"
+        ></p-progressSpinner>
+      </p-blockUI>
+    </p-panel>
+    
+  </div>

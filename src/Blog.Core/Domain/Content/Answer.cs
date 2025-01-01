@@ -10,16 +10,18 @@ namespace Blog.Core.Domain.Content
 {
     public class Answer
     {
-        public int AnswerId { get; set; }
+        public Guid AnswerId { get; set; }
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public int? ParentAnswerId { get; set; }
-        public Answer? ParentAnswer { get; set; }
-        public ICollection<Answer>? Replies { get; set; }
-        public int QuestionId { get; set; }
+
+        public Guid QuestionId { get; set; }
         public Question? Question { get; set; }
 
-        public int UserId { get; set; }
-        public AppUser? User { get; set; }
+        public Guid UserId { get; set; } 
+
+        public Guid? ParentAnswerId { get; set; }
+        public Answer? ParentAnswer { get; set; }
+        public ICollection<Answer>? Replies { get; set; }
     }
+
 }

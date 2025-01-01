@@ -17,6 +17,7 @@ import { PostService } from '../../Content/Services/post.service';
 import { PostInListDto } from '../../Content/Model/PostInListDto.model';
 
 import { CardModule } from 'primeng/card';
+import { QuestionComponent } from "../question/question.component";
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -27,8 +28,9 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     PasswordModule,
     FormsModule,
-    CardModule
-  ],
+    CardModule,
+    QuestionComponent
+],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
@@ -127,14 +129,12 @@ export class ProfileComponent implements OnInit {
     });
     this.initForm();
 
-    this.postService.getPostsPaging('', '', 1, 10).subscribe((res) => {
+    this.postService.getPostsUserPaging('', '', 1, 10).subscribe((res) => {
       res.results.forEach((data) => {
         if (data.status === 3) {
           this.postPublic.push(data); 
-          console.log(this.postPublic)
         } else {
           this.postPrivate.push(data); 
-          console.log(this.postPrivate);
         }
       });
     });
@@ -166,7 +166,7 @@ export class ProfileComponent implements OnInit {
     if (this.changePasswordForm.valid) {
       const passwordData = this.changePasswordForm.value;
       this.ProfileService.changePassword(passwordData).subscribe((res) => {
-        console.log(res);
+
       });
     } else {
       console.log('Form is invalid');

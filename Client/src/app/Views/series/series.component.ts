@@ -70,7 +70,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   loadData(selectionId: string | null | undefined = null) {
     this.toggleBlockUI(true);
 
-    this.seriesApiClient.getSeriesPaging(this.keyword, this.pageIndex, this.pageSize)
+    this.seriesApiClient.getSeriesUserPaging(this.keyword, this.pageIndex, this.pageSize)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: (response: any) => {
@@ -133,6 +133,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
         this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
         this.selectedItems = [];
         this.loadData(data.id);
+        
       }
     });
   }

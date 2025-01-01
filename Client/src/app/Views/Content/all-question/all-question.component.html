@@ -1,0 +1,75 @@
+<div
+  class="container mx-auto max-w-[1280px] grid grid-cols-10 gap-4 mt-10 shadow-md"
+>
+  <!-- Div chiếm 2 phần -->
+  <div class="col-span-7" >
+    <h1 class="text-2xl text-blue-400 mb-2">Câu hỏi mới nhất</h1>
+    <p-dataView #dv [value]="dataQuestion" [rows]="8" [paginator]="true">
+      <ng-template let-collection pTemplate="list">
+        <div class="space-y-6">
+          <div
+            *ngFor="let item of collection"
+            class="flex flex-row bg-white rounded-lg shadow-lg overflow-hidden"
+          >
+            <div (click)="navigateToQuestionDetail(item.questionId)">
+                <!-- Content -->
+            <div class="p-4">
+                <div class="flex flex-row gap-5">
+                  <div class="text-xs font-medium text-gray-800 truncate">
+                    By <span class="font-semibold">{{ item.userName }}</span> on
+                    {{ item.createdAt | date : "medium" }}
+                  </div>
+                </div>
+  
+                <div class="py-4">
+                  <span>{{ item.title }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+  <div class="col-span-3">
+    <h1 class="text-2xl text-blue-400 mb-2">Bài viết mới nhất</h1>
+    <p-dataView #dv [value]="dataPost" [rows]="4" [paginator]="true">
+      <ng-template let-collection pTemplate="list">
+        <div class="space-y-6">
+          <div
+            *ngFor="let item of collection"
+            class="flex flex-row bg-white rounded-lg shadow-lg overflow-hidden"
+          >
+            <div (click)="navigateToDetail(item.id)">
+                <!-- Content -->
+            <div class="p-4">
+                <div class="flex flex-row gap-5">
+                  <div class="text-xs font-medium text-gray-800 truncate">
+                    By <span class="font-semibold">{{ item.authorName }}</span> on
+                    {{ item.dateCreated | date : "medium" }}
+                  </div>
+                </div>
+  
+                <div class="pt-4">
+                  <span>{{ item.description }}</span>
+                </div>
+                <div class="pt-4">
+                  <div class="flex flex-wrap gap-2">
+                    <span
+                      *ngFor="let tag of item.tags"
+                      class="bg-slate-400 px-2 py-1 rounded text-white cursor-pointer"
+                    >
+                    {{tag }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+</div>
