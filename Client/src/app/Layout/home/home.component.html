@@ -65,7 +65,7 @@
             
           >
             <!-- Content -->
-            <div class="p-4">
+            <div class="p-4" (click)="navigateToQuestionDetail(item.questionId)">
               <div class="flex flex-row gap-5">
                 <div class="text-xs font-medium text-gray-800 truncate">
                   By <span class="font-semibold">{{ item.userName }}</span> on
@@ -87,16 +87,14 @@
 
 <div class="container mx-auto max-w-screen-xl mt-10 shadow-md">
   <h1 class="text-2xl text-blue-400 mb-2">Bài viết nổi bật</h1>
-  <div class="grid grid-cols-1 gap-4 mt-4 w-full">
+  <div class="grid grid-cols-1 gap-5 mt-4 w-full">
     <p-dataView
       #dv
       [value]="dataPostPopular"
-      [rows]="5"
-      [paginator]="true"
       class="w-full" 
     >
       <ng-template let-collection pTemplate="list">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 w-full">
           <div
             *ngFor="let item of collection"
             class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col"

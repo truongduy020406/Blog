@@ -76,10 +76,31 @@ export class QuestionService {
     return this.http.post(url_, body);
   }
 
-  updateSeries(body: questionDTO, data: any) {
-    let url_ = this.baseUrl + '/profile/question/create';
-    return this.http.post(url_, body);
+  updateQuestion(id:string,body: questionDTO) {
+    let url_ = this.baseUrl + '/profile/question/update?';
+    if (id === null)
+      throw new Error("The parameter 'id' cannot be null.");
+    else if (id !== undefined)
+        url_ += "id=" + encodeURIComponent("" + id) + "&";
+    url_ = url_.replace(/[?&]$/, "");
+    return this.http.put(url_, body, { responseType: 'text' as 'json' });
   }
+  
+    deleteQuestions(ids?: string[] | null | undefined){
+      let url_ = this.baseUrl + "/profile/question/delete?";
+      if (ids !== undefined && ids !== null)
+          ids && ids.forEach(item => { url_ += "ids=" + encodeURIComponent("" + item) + "&"; });
+      url_ = url_.replace(/[?&]$/, "");
+  
+      let options_ : any = {
+          observe: "response",
+          responseType: "blob",
+          headers: new HttpHeaders({
+          })
+      };
+  
+      return this.http.delete( url_, options_)
+    }
 
   deleteSeries(ids: any) {
     let url_ = this.baseUrl + '/api/admin/series?';

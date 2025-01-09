@@ -86,8 +86,9 @@ export class SeriesService {
         url_ += "id=" + encodeURIComponent("" + id) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
-    return this.http.put( url_,body)
-  }
+    return this.http.put(url_, body, { responseType: 'text' }); // Specify responseType as 'text'
+}
+
 
   getPostsInSeries(seriesId: string): Observable<PostInListDto[]> {
     let url_ = this.baseUrl + "/api/admin/series/post-series/{seriesId}";

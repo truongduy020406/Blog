@@ -20,11 +20,11 @@ namespace Blog.Data.Repositorys
             _mapper = mapper;
         }
 
-        public async Task<TagDto?> GetBySlug(string slug)
+        public async Task<Tag?> GetBySlug(string slug)
         {
             var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Slug == slug);
             if (tag == null) return null;
-            return _mapper.Map<TagDto?>(tag);
+            return _mapper.Map<Tag?>(tag);
         }
 
     }

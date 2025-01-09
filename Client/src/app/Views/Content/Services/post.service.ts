@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ADMIN_API_BASE_URL } from '../../Auth/Service/auth.service';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { PostActivityLogDto } from '../Model/PostActivityLogDto.model';
 import { CreateUpdatePostRequest } from '../Model/CreateUpdatePostRequest.model';
 import { ReturnBackRequest } from '../Model/ReturnBackRequest.model';
@@ -17,6 +17,9 @@ export class PostService {
   private baseUrl  = inject(ADMIN_API_BASE_URL);
   protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json',  
+  });
   getActivityLogs(id: string): Observable<PostActivityLogDto[]> {
     let url_ = this.baseUrl + "/api/admin/post/activity-logs/{id}";
     if (id === undefined || id === null)
@@ -33,11 +36,20 @@ export class PostService {
   } 
 
   createPost(body?: CreateUpdatePostRequest | undefined): Observable<void> {
-    console.log(body)
+    console.log(body);
     let url_ = this.baseUrl + "/profile/posts/create";
     url_ = url_.replace(/[?&]$/, "");
-    return this.http.post<void> ( url_, body)
+    
+    // Make the request with a response type of 'text' if the backend returns plain text
+    return this.http.post<void>(url_, body, { responseType: 'text' as 'json' })
+      .pipe(
+        catchError(error => {
+          console.error('Error creating post', error);
+          throw error; // Handle error as needed
+        })
+      );
   }
+  
 
   updatePost(id?: string | undefined, body?: CreateUpdatePostRequest | undefined): Observable<void> {
     let url_ = this.baseUrl + "/api/admin/post?";
@@ -174,12 +186,16 @@ export class PostService {
   getPostsByTag(tag: string, page: number): Observable<any> {
     let url_ = this.baseUrl + "/api/PostsClient/tag";
     const params = new HttpParams()
-      .set('page', page.toString()); // Thêm tham số page vào request
+      .set('page', page.toString()); 
 
     return this.http.get<any>(`${url_}/${tag}`, { params });
   }
 
-  getPopularProfiles(count: number): Observable<PostInListDto[]> {
-    return this.http.get<PostInListDto[]>(`${this.baseUrl}/api/Profile/popular?count=${count}`);
+  getPopularProfiles(): Observable<PostInListDto[]> {
+    return this.http.get<PostInListDto[]>(`${this.baseUrl}/api/Profile/popular`);
+  }
+
+  getPostAndIncreaseView(id: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/admin/post/postview/${id}`);
   }
 }

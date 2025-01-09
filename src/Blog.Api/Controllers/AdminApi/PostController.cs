@@ -218,5 +218,20 @@ namespace Blog.Api.Controllers.AdminApi
             var tagNames = await _unitOfWork.Posts.GetTagsByPostId(postId);
             return Ok(tagNames);
         }
+
+        [HttpGet("postview/{id}")]
+        public async Task<IActionResult> GetPost(Guid id)
+        {
+            var post = await _unitOfWork.Posts.GetByIdAsync(id);
+            if (post == null)
+            {
+                return NotFound(new { message = "Post not found." });
+            }
+
+            // Tăng số lượt xem
+            await _unitOfWork.Posts.IncrementViewCountAsync(id);
+
+            return Ok(post); 
+        }
     }
 }
