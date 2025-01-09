@@ -15,10 +15,6 @@ using Blog.Core.Model.Client;
 using Blog.Core.ConfigOption;
 using Microsoft.Extensions.Options;
 
-namespace TeduBlog.Api.Controllers.AdminApi
-{
-       
-}
 [Route("api/admin/auth")]
 [ApiController]
 public class AuthController : ControllerBase

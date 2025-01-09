@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TeduBlog.Core.Model.Auth
+namespace Blog.Core.Model.Auth
 {
     public class TokenRequest
     {

@@ -26,7 +26,6 @@ namespace Blog.Data
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<Question> Questions { get; set; }
-        public DbSet<Answer> Answers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -43,11 +42,6 @@ namespace Blog.Data
 
             builder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens")
                .HasKey(x => new { x.UserId });
-            builder.Entity<Answer>()
-           .HasOne(a => a.ParentAnswer)
-           .WithMany(a => a.Replies)
-           .HasForeignKey(a => a.ParentAnswerId)
-           .OnDelete(DeleteBehavior.Restrict);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

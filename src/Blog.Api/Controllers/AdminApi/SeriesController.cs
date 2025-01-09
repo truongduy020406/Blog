@@ -27,9 +27,9 @@ namespace Blog.Api.Controllers.AdminApi
         public async Task<IActionResult> CreateSeries([FromBody] CreateUpdateSeriesRequest request)
         {
             var userId = User.GetUserId();
-            var post = _mapper.Map<CreateUpdateSeriesRequest, Core.Domain.Content.Series>(request);
-            post.AuthorUserId = userId;
-            _unitOfWork.Series.Add(post);
+            var serie = _mapper.Map<CreateUpdateSeriesRequest, Core.Domain.Content.Series>(request);
+            serie.AuthorUserId = userId;
+            _unitOfWork.Series.Add(serie);
 
             var result = await _unitOfWork.CompleteAsync();
             return result > 0 ? Ok() : BadRequest();
@@ -39,16 +39,28 @@ namespace Blog.Api.Controllers.AdminApi
         [Authorize(Permissions.Series.Edit)]
         public async Task<IActionResult> UpdateSeries(Guid id, [FromBody] CreateUpdateSeriesRequest request)
         {
-            var post = await _unitOfWork.Series.GetByIdAsync(id);
-            if (post == null)
+            var userId = User.GetUserId();
+            if (userId == Guid.Empty)
             {
-                return NotFound();
+                return BadRequest("Không thể xác định UserId.");
             }
-            _mapper.Map(request, post);
-
+            var serie = await _unitOfWork.Series.GetByIdAsync(id);
+            if (serie == null)
+            {
+                return NotFound($"Không tìm thấy Series với Id: {id}");
+            }
+            request.AuthorUserId = userId;
+ 
+            _mapper.Map(request, serie);
             var result = await _unitOfWork.CompleteAsync();
-            return result > 0 ? Ok() : BadRequest();
+            if (result > 0)
+            {
+                return Ok("Cập nhật thành công.");
+            }
+
+            return BadRequest("Không thể lưu thay đổi. Vui lòng thử lại.");
         }
+
 
         [Route("post-series")]
         [HttpPut()]

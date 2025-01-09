@@ -4,7 +4,7 @@ using Blog.Core.Model.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TeduBlog.Core.Model.Auth;
+
 
 namespace Blog.Api.Controllers.AdminApi
 {

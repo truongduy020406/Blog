@@ -32,7 +32,8 @@ export class PostDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.postId = this.route.snapshot.paramMap.get('id')!;
-    this.postService.getPostById(this.postId).subscribe((res) => {
+
+    this.postService.getPostAndIncreaseView(this.postId).subscribe((res) => {
       this.dataPost = res;
       this.dataPost.thumbnail = environment.API_URL + res.thumbnail;
 

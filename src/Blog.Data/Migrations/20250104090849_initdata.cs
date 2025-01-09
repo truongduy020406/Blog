@@ -6,11 +6,33 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Blog.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initdata : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Answers",
+                columns: table => new
+                {
+                    AnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentAnswerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AnswerId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Answers", x => x.AnswerId);
+                    table.ForeignKey(
+                        name: "FK_Answers_Answers_AnswerId1",
+                        column: x => x.AnswerId1,
+                        principalTable: "Answers",
+                        principalColumn: "AnswerId");
+                });
+
             migrationBuilder.CreateTable(
                 name: "AppRoleClaims",
                 columns: table => new
@@ -229,6 +251,22 @@ namespace Blog.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.QuestionId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Series",
                 columns: table => new
                 {
@@ -262,6 +300,30 @@ namespace Blog.Data.Migrations
                     table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FromUserName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    FromUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ToUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ToUserName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    TransactionType = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answers_AnswerId1",
+                table: "Answers",
+                column: "AnswerId1");
+
             migrationBuilder.CreateIndex(
                 name: "IX_PostCategories_Slug",
                 table: "PostCategories",
@@ -284,6 +346,9 @@ namespace Blog.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Answers");
+
             migrationBuilder.DropTable(
                 name: "AppRoleClaims");
 
@@ -321,10 +386,16 @@ namespace Blog.Data.Migrations
                 name: "PostTags");
 
             migrationBuilder.DropTable(
+                name: "Questions");
+
+            migrationBuilder.DropTable(
                 name: "Series");
 
             migrationBuilder.DropTable(
                 name: "Tags");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
         }
     }
 }

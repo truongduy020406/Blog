@@ -90,9 +90,25 @@ namespace Blog.Data.Repositorys
 
         public IEnumerable<Post> GetPopularPosts(int count)
         {
-            return _context.Posts.OrderByDescending(d => d.ViewCount).Take(count).ToList();
+            // Filter posts where Status == PostStatus.Published (3) and order by ViewCount
+            var posts = _context.Posts
+                                .Where(p => p.Status == PostStatus.Published)  // Use enum value for Published
+                                .OrderByDescending(d => d.ViewCount)
+                                .Take(count)
+                                .ToList();
+
+            Console.WriteLine($"Số bài viết lấy ra: {posts.Count}");
+
+            foreach (var post in posts)
+            {
+                Console.WriteLine($"ID: {post.Id}, ViewCount: {post.ViewCount}");
+            }
+
+            return posts;
         }
-    
+
+
+
         public Task<bool> IsSlugAlreadyExisted(string slug, Guid? currentId = null)
         {
             if (currentId.HasValue)
@@ -254,12 +270,21 @@ namespace Blog.Data.Repositorys
 
         public async Task AddTagToPost(Guid postId, Guid tagId)
         {
-            await _context.PostTags.AddAsync(new PostTag()
+            // Kiểm tra xem PostTag đã tồn tại chưa
+            var existingRelation = await _context.PostTags
+                .FirstOrDefaultAsync(pt => pt.PostId == postId && pt.TagId == tagId);
+
+            if (existingRelation == null)
             {
-                PostId = postId,
-                TagId = tagId
-            });
+                // Nếu chưa tồn tại, thêm mới
+                await _context.PostTags.AddAsync(new PostTag()
+                {
+                    PostId = postId,
+                    TagId = tagId
+                });
+            }
         }
+
 
         public async Task<List<string>> GetTagsByPostId(Guid postId)
         {
@@ -308,8 +333,16 @@ namespace Blog.Data.Repositorys
             return await _mapper.ProjectTo<TagDto>(query).ToListAsync();
         }
 
-       
 
-       
+        public async Task IncrementViewCountAsync(Guid id)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (post != null)
+            {
+                post.ViewCount++;
+                await _context.SaveChangesAsync(); 
+            }
+        }
+
     }
 }

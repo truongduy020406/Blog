@@ -148,7 +148,7 @@ namespace Blog.Api.Controllers.UserApi
         }
 
         [HttpGet("popular")]
-        public IActionResult GetPopularPosts([FromQuery] int count = 5)
+        public IActionResult GetPopularPosts(int count = 5)
         {
             try
             {

@@ -11,6 +11,6 @@ namespace Blog.Core.Repository
 {
     public interface ITagRepository : IRepository<Tag, Guid>
     {
-        Task<TagDto> GetBySlug(string slug);
+        Task<Tag> GetBySlug(string slug);
     }
 }

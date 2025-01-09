@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Model.Client;
-
+    
 namespace Blog.Data.Repositorys
 {
     public class QuestionRepository : RepositoryBase<Question, Guid>, IQuestionRepository
@@ -85,6 +85,10 @@ namespace Blog.Data.Repositorys
             var query = _context.Questions.Where(x => x.UserId == userId)
                 .AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(x => x.Title.Contains(keyword));
+            }
 
             var totalRow = await query.CountAsync();
 

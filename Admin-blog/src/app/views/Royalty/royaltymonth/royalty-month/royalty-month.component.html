@@ -49,8 +49,6 @@
               <th>Bài chờ duyệt</th>
               <th>Bài bị trả</th>
               <th>Tổng bài đăng</th>
-              <th>Đã trả</th>
-              <th>Chưa trả</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row>
@@ -63,8 +61,6 @@
               <td>{{row.numberOfWaitingApprovalPosts | number}}</td>
               <td>{{row.numberOfRejectedPosts | number}}</td>
               <td>{{row.numberOfPublishPosts | number}}</td>
-              <td>{{row.numberOfPaidPublishPosts | number}}</td>
-              <td>{{row.numberOfUnpaidPublishPosts | number}}</td>
             </tr>
           </ng-template>
         </p-table>

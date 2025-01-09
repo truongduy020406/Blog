@@ -14,17 +14,17 @@
         <span>Views: {{ dataPost?.viewCount }}</span>
       </div>
     </ng-template>
-
     <div
+    class="max-w-[1000px]"
       style="
         overflow-wrap: break-word;
         word-break: break-word;
         white-space: normal;
       "
     >
-      <markdown [data]="dataPost?.content"></markdown>
+      <markdown class="prose"     [data]="dataPost?.content"></markdown>
     </div>
-
+    
     <ng-template pTemplate="footer"> </ng-template>
   </p-card>
 </div>

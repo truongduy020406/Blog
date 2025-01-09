@@ -57,4 +57,6 @@ export class PostsComponent implements OnInit {
     this.pageSize = event.rows;
     this.loadData();
   }
+
+  
 }

@@ -19,11 +19,9 @@ import { EditorModule } from 'primeng/editor';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UtilityService } from '../../../Shared/Service/utility.service';
 import { UploadService } from '../../../Shared/Service/upload.service';
-import { ProfileService } from '../Services/profile.service';
 import { Subject, takeUntil } from 'rxjs';
 import { QuestionService } from '../Services/question.service';
 import { environment } from '../../../../environments/environment';
-import { PostDto } from '../../Content/Model/PostDto.model';
 import { questionDTO } from '../Models/question.model';
 
 @Component({
@@ -145,7 +143,7 @@ export class QuestionDetailComponent {
         });
     } else {
       this.questionService
-        .updateSeries(this.config.data?.id, this.form.value)
+        .updateQuestion(this.config.data?.id, this.form.value)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe({
           next: () => {

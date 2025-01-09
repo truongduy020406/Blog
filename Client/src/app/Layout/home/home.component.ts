@@ -68,14 +68,15 @@ export class HomeComponent implements OnInit {
   }
 
   getPostPopular() {
-    this.postService.getPopularProfiles(5).subscribe((res) => {
-      this.dataPostPopular = res.filter((data) => data.status === 3);
-      this.totalCount = this.dataPost.length;
-      const postsWithTags$ = this.dataPost.map((post) => {
+    this.postService.getPopularProfiles().subscribe((res) => {
+      this.dataPostPopular = res;
+
+      this.totalCount = this.dataPostPopular.length;
+      const postsWithTags$ = this.dataPostPopular.map((post) => {
         return this.postService.getPostTags(post.id).pipe(
           map((tags) => ({
             ...post,
-            tags, // Gắn thêm trường tags
+            tags, 
             thumbnail: environment.API_URL + post.thumbnail,
           }))
         );
@@ -83,6 +84,7 @@ export class HomeComponent implements OnInit {
 
       forkJoin(postsWithTags$).subscribe((postsWithTags) => {
         this.dataPostPopular = postsWithTags;
+        console.log(postsWithTags)
       });
     });
   }
@@ -104,5 +106,8 @@ export class HomeComponent implements OnInit {
   }
   navigateToDetail(id: string | undefined) {
     this.router.navigate([`content/postdetail/${id}`]);
+  }
+  navigateToQuestionDetail(id:string){
+    this.router.navigate([`content/QuestionC/${id}`]);
   }
 }
