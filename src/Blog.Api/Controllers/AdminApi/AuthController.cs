@@ -145,6 +145,7 @@ public class AuthController : ControllerBase
 
         return Ok(new AuthenticatedResult()
         {
+            userId = user.Id,
             fullName = user.GetFullName(),
             Token = accessToken,
             RefreshToken = refreshToken

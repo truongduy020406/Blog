@@ -12,6 +12,12 @@ namespace Blog.Core.Repository
     public interface ILikeRepository : IRepository<Like, Guid>
     {
         Task<int> CountAsync(Expression<Func<Like, bool>> predicate);
+        Task<Like> FindAsync(Expression<Func<Like, bool>> predicate);
+        Task<Like> GetByUserIdAndPostIdAsync(Guid userId, Guid postId);
+
+
+
+
     }
 
 }

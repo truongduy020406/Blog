@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
   loadQuestion() {
     this.questionService.getLastQuestion().subscribe((res) => {
       this.dataQuestion = res;
-      console.log('1', this.dataQuestion);
     });
   }
   loadData() {
@@ -84,7 +83,6 @@ export class HomeComponent implements OnInit {
 
       forkJoin(postsWithTags$).subscribe((postsWithTags) => {
         this.dataPostPopular = postsWithTags;
-        console.log(postsWithTags)
       });
     });
   }
@@ -101,7 +99,6 @@ export class HomeComponent implements OnInit {
       this.dataPost.map((data) => {
         data.thumbnail = environment.API_URL + data.thumbnail;
       });
-      console.log(this.dataPost);
     });
   }
   navigateToDetail(id: string | undefined) {

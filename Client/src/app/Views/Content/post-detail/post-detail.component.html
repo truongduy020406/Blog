@@ -1,31 +1,27 @@
-<div class="container mx-auto max-w-[1280px] mt-10 grid grid-cols-6">
+<div class="container mx-auto mt-10 grid grid-cols-8">
   <!-- Sticky Icons -->
   <div class="col-span-1 text-center font-size-2xl">
-    <div class="fixed mt-28 ml-20">
+    <div class="fixed mt-10 ml-20">
       <i
         class="pi pi-caret-down"
         (click)="onDownClick()"
-        [style.color]="number <= initialValue - 1 ? 'gray' : 'black'"
-        [style.pointer-events]="number <= initialValue - 1 ? 'none' : 'auto'"
         style="font-size: 40px"
       >
       </i>
 
       <!-- Hiển thị số lượng -->
-      <div class="text-4xl" style="margin: 10px 0">{{ number }}</div>
+      <div class="text-4xl" style="margin: 10px 0">{{ countLike }}</div>
 
       <i
+        *ngIf="!islike"
         class="pi pi-caret-up"
         (click)="onUpClick()"
-        [style.color]="number >= initialValue + 1 ? 'gray' : 'black'"
-        [style.pointer-events]="number >= initialValue + 1 ? 'none' : 'auto'"
         style="font-size: 40px"
       >
       </i>
     </div>
   </div>
 
-  <!-- Card hiển thị chi tiết bài viết -->
   <div class="col-span-5 overflow-auto">
     <p-card class="mb-4">
       <ng-template pTemplate="header">
@@ -41,21 +37,118 @@
         </div>
       </ng-template>
       <div
-        class="max-w-[1000px]"
+        class="content max-w-[1000px] break-words overflow-hidden"
         style="
-          overflow-wrap: break-word;
-          word-break: break-word;
           white-space: normal;
+          word-wrap: break-word;
+          word-break: break-word;
         "
       >
         <markdown class="prose" [data]="dataPost?.content"></markdown>
       </div>
-
       <ng-template pTemplate="footer"></ng-template>
     </p-card>
 
-    <button (click)="createComment()" class="p-4 bg-red-600">
-      Add comment
-    </button>
+    <!-- Add New Comment -->
+    <div class="mt-4 p-4 border rounded bg-gray-50">
+      <textarea
+        [(ngModel)]="newComment.content"
+        rows="3"
+        class="w-full p-2 border rounded"
+        placeholder="Write your comment here..."
+      ></textarea>
+      <button
+        (click)="onAddComment()"
+        class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        Submit Comment
+      </button>
+    </div>
+
+    <!-- Display Comments -->
+    <div class="mt-6">
+      <h3 class="text-lg font-bold">Comments</h3>
+      <div
+        *ngFor="let comment of dataComment"
+        class="p-4 border-b flex justify-between items-center"
+      >
+        <!-- Thông tin bình luận -->
+        <div>
+          <p class="font-semibold">{{ comment.authorName }}</p>
+          <p>{{ comment.content }}</p>
+          <p class="text-sm text-gray-500">
+            {{ comment.createdAt | date }}
+          </p>
+        </div>
+
+        <!-- Nút và Icon chỉnh sửa/xóa -->
+        <div class="flex items-center space-x-2">
+          <!-- Nút Reply -->
+          <button
+            class="text-blue-500 hover:underline text-sm"
+            (click)="onReplyClick(comment.id)"
+          >
+            Reply
+          </button>
+
+          <!-- Icon sửa và xóa nếu là bình luận của người dùng -->
+          <ng-container *ngIf="comment.authorUserId === userId">
+            <button
+              class="text-yellow-500"
+              (click)="onEditClick(comment)"
+              title="Edit"
+            >
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              class="text-red-500"
+              (click)="onDeleteClick(comment.id)"
+              title="Delete"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc col-span-2 overflow-auto fixed right-48 mt-10">
+      <h1 class="text-3xl mb-4 text-red-300">Mục Lục</h1>
+      <ul>
+        <li *ngFor="let item of toc">
+          <a
+            href="javascript:void(0)"
+            (click)="scrollToElement(item.id)"
+            [class.highlight]="selectedHeaderId === item.id"
+            style="
+              overflow-wrap: break-word;
+              word-break: break-word;
+              white-space: normal;
+            "
+          >
+            {{ item.text }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div class="toc col-span-2 overflow-auto fixed right-48 mt-10">
+    <h1 class="text-3xl mb-4 text-red-800">Mục Lục</h1>
+    <ul>
+      <li *ngFor="let item of toc">
+        <a
+          href="javascript:void(0)"
+          (click)="scrollToElement(item.id)"
+          [class.highlight]="selectedHeaderId === item.id"  
+          style="overflow-wrap: break-word; word-break: break-word; white-space: normal;">
+          {{ item.text }}
+        </a>
+      </li>
+    </ul>
   </div>
 </div>
+
+

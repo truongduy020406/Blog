@@ -100,5 +100,61 @@ namespace Blog.Api.Controllers.UserApi
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateComment(Guid id, [FromBody] CreateUpdateCommentDto commentDto)
+        {
+          /*  var userId = User.GetUserId();
+            if (userId == Guid.Empty)
+            {
+                return BadRequest("Không thể xác định UserId.");
+            }*/
+            var comment = await _unitOfWork.Comment.GetByIdAsync(id);
+            if (comment == null)
+            {
+                return NotFound($"Không tìm thấy Series với Id: {id}");
+            }
+
+            _mapper.Map(commentDto, comment);
+            var result = await _unitOfWork.CompleteAsync();
+            if (result > 0)
+            {
+                return Ok("Cập nhật thành công.");
+            }
+
+            return BadRequest("Không thể lưu thay đổi. Vui lòng thử lại.");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            try
+            {
+                var comment = await _unitOfWork.Comment.GetByIdAsync(id);
+                // Xóa bình luận
+                _unitOfWork.Comment.Remove(comment);
+                
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred", Details = ex.Message });
+            }
+            var result = await _unitOfWork.CompleteAsync();
+            return result > 0 ? Ok() : BadRequest();
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> getcommentWithId(Guid id)
+        {
+
+            var comment = await _unitOfWork.Comment.GetByIdAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(comment);
+
+        }
+
     }
 }

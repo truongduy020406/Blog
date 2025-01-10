@@ -41,10 +41,8 @@ namespace Blog.Api.Controllers.UserApi
             if (tag == null)
                 return NotFound(new { Message = "Tag not found" });
 
-            // Truy xuất danh sách các bài viết từ PagedResult
             var posts = pagedResult.Results;
 
-            // Sử dụng Task.WhenAll để lấy tags đồng thời cho từng bài viết
             var postsWithTagsTasks = posts.Select(post =>
             {
                 return _unitOfWork.Posts.GetTagsByPostId(post.Id).ContinueWith(task =>
@@ -64,7 +62,6 @@ namespace Blog.Api.Controllers.UserApi
                 });
             });
 
-            // Chạy tất cả các task đồng thời
             var postsWithTags = await Task.WhenAll(postsWithTagsTasks);
 
             return Ok(new

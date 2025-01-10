@@ -14,7 +14,7 @@ import { PostInListDto } from '../Model/PostInListDto.model';
 })
 export class PostService {
   private http = inject(HttpClient);
-  private baseUrl  = inject(ADMIN_API_BASE_URL);
+  private baseUrl  = inject(ADMIN_API_BASE_URL);  
   protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
   headers = new HttpHeaders({
@@ -35,8 +35,11 @@ export class PostService {
     return this.http.get<any>(url_)
   } 
 
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('auth-token');  
+    return !!token;  
+  }
   createPost(body?: CreateUpdatePostRequest | undefined): Observable<void> {
-    console.log(body);
     let url_ = this.baseUrl + "/profile/posts/create";
     url_ = url_.replace(/[?&]$/, "");
     
@@ -44,7 +47,6 @@ export class PostService {
     return this.http.post<void>(url_, body, { responseType: 'text' as 'json' })
       .pipe(
         catchError(error => {
-          console.error('Error creating post', error);
           throw error; // Handle error as needed
         })
       );

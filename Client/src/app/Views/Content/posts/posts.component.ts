@@ -49,7 +49,6 @@ export class PostsComponent implements OnInit {
   }
   navigateToDetail(id: string | undefined) {
     this.router.navigate([`/content/postdetail/${id}`]);
-    console.log(1);
   }
 
   pageChanged(event: any): void {

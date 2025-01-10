@@ -94,7 +94,6 @@ export class RegisterComponent implements OnInit {
     this.loading = true;
     this.authService.register(this.data).subscribe({
       next: (res) => {
-        console.log(res);
       },
       error: (e) => {
         this.messageService.add({

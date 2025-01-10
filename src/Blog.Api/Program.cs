@@ -152,7 +152,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-    .WithOrigins("http://localhost:4200", "http://localhost:52404"));
+    .WithOrigins(configuration["AllowedOrigins"]?.Split(";")));
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

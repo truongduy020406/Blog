@@ -16,7 +16,7 @@ namespace Blog.Core.Model.Client
 
         public Guid? QuestionId { get; set; }
 
-        public DateTime LikeAt { get; set; } = DateTime.UtcNow;
+        public DateTime? LikeAt { get; set; } = DateTime.UtcNow;
 
         public class AutoMapperProfiles : Profile
         {

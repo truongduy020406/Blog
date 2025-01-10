@@ -32,6 +32,7 @@ import { PostDto } from '../Model/PostDto.model';
 import { ButtonModule } from 'primeng/button';
 import { MessageConstants } from '../../../Shared/constants/Message.constants';
 import { AlertService } from '../../../Shared/Service/alert.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-new-post',
   standalone: true,
@@ -78,7 +79,8 @@ export class NewPostComponent implements OnInit {
     private postApiClient: PostService,
     private postCategoryApiClient: PostCategoryService,
     private uploadService: UploadService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router:Router
   ) {
   }
   ngOnDestroy(): void {
@@ -129,7 +131,6 @@ export class NewPostComponent implements OnInit {
             });
           });
 
-          console.log(this.postCategories);
         },
         error: () => {
           this.toggleBlockUI(false);
@@ -143,8 +144,6 @@ export class NewPostComponent implements OnInit {
         next: (response: any) => {
           this.form.controls['thumbnail'].setValue(response.path);
           this.thumbnailImage = environment.API_URL + response.path;
-          console.log(this.thumbnailImage);
-          console.log(response);
         },
         error: (err: any) => {
           console.log(err);
@@ -158,6 +157,10 @@ export class NewPostComponent implements OnInit {
   }
 
   private saveData() {
+    if (!this.postApiClient.isAuthenticated()) {
+      this.router.navigate(['/login']);  
+      return;
+    }
     const data:PostDto = {
       categoryId:this.form.value.categoryId.value,
       content:this.form.value.content,
@@ -168,7 +171,7 @@ export class NewPostComponent implements OnInit {
       tags:this.form.value.tags,
       thumbnail:this.form.value.thumbnail
     }
-    console.log(data)
+
     this.toggleBlockUI(true);
     this.postApiClient
       .createPost(data)

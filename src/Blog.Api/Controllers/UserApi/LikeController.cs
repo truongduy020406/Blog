@@ -27,11 +27,16 @@ namespace Blog.Api.Controllers.UserApi
         [HttpPost]
         public async Task<IActionResult> CreateLike([FromBody] CreateLikeDTO likeDTO)
         {
+            if (likeDTO.PostId == null && likeDTO.QuestionId == null)
+            {
+                return BadRequest("Either PostId or QuestionId must be provided.");
+            }
+
             var like = _mapper.Map<Like>(likeDTO);
 
-            
             var userId = User.GetUserId();
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
             like.AuthorUserId = userId;
             like.AuthorName = user.GetFullName();
             like.LikeAt = DateTime.UtcNow;
@@ -39,16 +44,17 @@ namespace Blog.Api.Controllers.UserApi
             _unitOfWork.Like.Add(like);
             var result = await _unitOfWork.CompleteAsync();
 
-            return result > 0 ? Ok(like) : BadRequest("Failed to create comment.");
+            return result > 0 ? Ok(like) : BadRequest("Failed to create like.");
         }
 
 
-        [HttpDelete]
-        public async Task<IActionResult> RemoveLike(Guid id)
-        {
-            var like = await _unitOfWork.Like.GetByIdAsync(id);
 
-            // Kiểm tra xem Like có tồn tại hay không
+        [HttpDelete]
+        public async Task<IActionResult> RemoveLike([FromQuery] Guid postId)
+        {
+            var userId = User.GetUserId(); // Lấy UserId từ token hoặc context
+            var like = await _unitOfWork.Like.GetByUserIdAndPostIdAsync(userId, postId);
+
             if (like == null)
             {
                 return NotFound(new { message = "Like not found." });
@@ -59,6 +65,7 @@ namespace Blog.Api.Controllers.UserApi
 
             return Ok(new { message = "Like removed successfully." });
         }
+
 
         [HttpGet("count/question/{questionId}")]
         public async Task<IActionResult> CountLikesForQuestion(Guid questionId)
@@ -77,5 +84,18 @@ namespace Blog.Api.Controllers.UserApi
 
             return Ok(new { postId, likeCount = count });
         }
+
+        [HttpGet("status/post/{postId}")]
+        public async Task<IActionResult> CheckUserLikeStatus(Guid postId)
+        {
+            var userId = User.GetUserId();
+
+            // Kiểm tra trạng thái Like
+            var existingLike = await _unitOfWork.Like.FindAsync(l => l.AuthorUserId == userId && l.PostId == postId);
+            var liked = existingLike != null;
+
+            return Ok(new { liked });
+        }
+
     }
 }

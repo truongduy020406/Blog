@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authService.login(this.data).subscribe({
       next:(res) => {
-        console.log(res)
         this.tokenService.saveToken(res.token);
         this.tokenService.saveRefreshToken(res.refreshToken);
         this.tokenService.saveUser(res);

@@ -13,10 +13,6 @@ namespace Blog.Core.Model.Client
     {
  
         public string Content { get; set; }
-        public Guid? ParentCommentId { get; set; }
-
-        public Guid? PostId { get; set; }
-        public Guid? QuestionId { get; set; }
 
         public class AutoMapperProfiles : Profile
         {
