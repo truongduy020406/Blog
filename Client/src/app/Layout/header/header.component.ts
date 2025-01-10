@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../Views/Auth/Service/auth.service';
 import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,8 @@ import { MenuItem } from 'primeng/api';
 })
 export class HeaderComponent implements OnInit {
   authService = inject(AuthService);
+  private router = inject(Router);
+
   items = [
     { label: 'Trang chủ', icon: 'pi pi-home', url: '/#/' },
     { label: 'Bài viết', icon: 'pi pi-pencil', url: '/#/content/post' },
@@ -22,7 +25,7 @@ export class HeaderComponent implements OnInit {
   ];
   item = [
     { label: 'Hồ sơ', icon: 'pi pi-address-book', url: '/#/user/profile' },
-    { label: 'Đăng xuất', icon: 'pi pi-sign-out', url: '/#/register' },
+    { label: 'Đăng xuất', icon: 'pi pi-sign-out', command: () => this.logout() },
   ];
 
   write = [
@@ -32,12 +35,15 @@ export class HeaderComponent implements OnInit {
 
   ];
   ngOnInit(): void {
-    this.authService.getProfile().subscribe();
+    if(localStorage.getItem('auth-token')){
+      this.authService.getProfile().subscribe()
+    }
   }
 
-  test() {
-    this.authService.getProfile().subscribe((res) => {
-      console.log(res);
-    });
+
+
+  logout() {
+    this.authService.logout() 
+    this.router.navigate(['/Auth/login']); 
   }
 }

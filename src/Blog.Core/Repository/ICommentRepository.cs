@@ -9,6 +9,6 @@ namespace Blog.Core.Repository
     {
         Task<IEnumerable<CommentDto>> GetCommentsByPostIdAsync(Guid postId);
         Task<IEnumerable<CommentDto>> GetCommentsByQuestionIdAsync(Guid questionId);
-        Task UpdateAsync(CreateUpdateCommentDto comment);
+        Task UpdateAsync(Guid commentId, CreateUpdateCommentDto comment);
     }
 }

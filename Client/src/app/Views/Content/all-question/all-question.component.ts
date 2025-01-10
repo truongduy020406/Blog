@@ -37,7 +37,6 @@ export class AllQuestionComponent implements OnInit {
   loadQuestion() {
       this.questionService.getLastQuestion().subscribe((res) => {
         this.dataQuestion = res;
-        console.log('1', this.dataQuestion);
       });
     }
     loadData() {
@@ -55,7 +54,6 @@ export class AllQuestionComponent implements OnInit {
   
         forkJoin(postsWithTags$).subscribe((postsWithTags) => {
           this.dataPost = postsWithTags;
-          console.log(this.dataPost)
         });
       });
     }

@@ -63,7 +63,6 @@ export class SeriesPostsComponent {
       .subscribe({
         next: (response: PostInListDto[]) => {
           this.posts = response;
-          console.log(this.posts)
           this.toggleBlockUI(false);
         },
         error: (error) => {

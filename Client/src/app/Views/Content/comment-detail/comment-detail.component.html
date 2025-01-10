@@ -1,0 +1,21 @@
+<p-panel class="p-4 bg-white rounded-lg shadow-lg">
+    <form [formGroup]="form" (ngSubmit)="saveChanges()">
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 mb-4">
+          <label for="content" class="block text-lg font-semibold text-gray-700">Nội dung bình luận:</label>
+          <textarea id="content" formControlName="content" rows="5" pInputTextarea 
+                    class="w-full p-3 mt-2 border rounded-md text-base border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
+          <div *ngIf="form.controls['content'].invalid && form.controls['content'].touched" class="text-sm text-red-500 mt-2">
+            Nội dung bình luận không được để trống
+          </div>
+        </div>
+        <div class="p-col-12 flex justify-center gap-4 mt-4">
+          <button type="button" pButton label="Hủy" icon="pi pi-times" 
+                  (click)="closeDialog()" class="w-32 p-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"></button>
+          <button type="submit" pButton label="Cập nhật" icon="pi pi-check" 
+                  [disabled]="btnDisabled" class="w-32 p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none disabled:bg-gray-400 disabled:cursor-not-allowed"></button>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+  

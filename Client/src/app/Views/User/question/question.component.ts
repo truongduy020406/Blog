@@ -40,152 +40,146 @@ import { UtilityService } from '../../../Shared/Service/utility.service';
 })
 export class QuestionComponent implements OnInit {
   //System variables
-  ngUnsubscribe = new Subject<void>();
-  blockedPanel: boolean = false;
-
-  //Paging variables
-  pageIndex: number = 1;
-  pageSize: number = 10;
-  totalCount?: number;
-
-  //Business variables
-  items: questionDTO[] = [];
-  selectedItems: questionDTO[] = [];
-  keyword: string = '';
-
-  constructor(
-    private questionService: QuestionService,
-    public dialogService: DialogService,
-    private notificationService: AlertService,
-    private confirmationService: ConfirmationService,
-    public config: DynamicDialogConfig,
-    private utilService: UtilityService,
-  ) {}
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-
-  ngOnInit() {
-    this.loadData();
-
-  }
-
-  loadData(selectionId: string | null | undefined = null) {
-    this.toggleBlockUI(true);
-      this.questionService
-      .getQuestionByUserPaging(this.keyword, this.pageIndex, this.pageSize)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe({
-        next: (response: any) => {
-          this.items = response.results;
-          console.log(this.items);
-          this.totalCount = response.rowCount;
-          this.toggleBlockUI(false);
-        },
-        error: () => {
-          this.toggleBlockUI(false);
-        },
+    ngUnsubscribe = new Subject<void>();
+    blockedPanel: boolean = false;
+  
+    //Paging variables
+    pageIndex: number = 1;
+    pageSize: number = 10;
+    totalCount?: number;
+  
+    //Business variables
+    items: questionDTO[] = [];
+    selectedItems: questionDTO[] = [];
+    keyword: string = '';
+  
+    constructor(
+      private questionService: QuestionService,
+      public dialogService: DialogService,
+      private notificationService: AlertService,
+      private confirmationService: ConfirmationService) { }
+  
+    ngOnDestroy(): void {
+      this.ngUnsubscribe.next();
+      this.ngUnsubscribe.complete();
+    }
+  
+    ngOnInit() {
+      this.loadData();
+    }
+  
+    loadData(selectionId: string | null | undefined = null) {
+      this.toggleBlockUI(true);
+  
+      this.questionService.getQuestionByUserPaging(this.keyword, this.pageIndex, this.pageSize)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe({
+          next: (response: any) => {
+            this.items = response.results;
+            this.totalCount = response.rowCount;
+            this.toggleBlockUI(false);
+          }
+          ,
+          error: () => {
+            this.toggleBlockUI(false);
+  
+          }
+        });
+    }
+  
+    showAddModal() {
+      const ref = this.dialogService.open(QuestionDetailComponent, {
+        header: 'Thêm mới câu hỏi bài viết',
+        width: '70%'
       });
-    
-   
-  }
-
-  showAddModal() {
-    const ref = this.dialogService.open(QuestionDetailComponent, {
-      header: 'Thêm mới series bài viết',
-      width: '70%',
-    });
-    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-    const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
-    const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
-    dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
-    ref.onClose.subscribe((data: questionDTO) => {
-      if (data) {
-        this.notificationService.showSuccess(MessageConstants.CREATED_OK_MSG);
-        this.selectedItems = [];
-        this.loadData();
+      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
+      const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
+      dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
+      ref.onClose.subscribe((data: questionDTO) => {
+        if (data) {
+          this.notificationService.showSuccess(MessageConstants.CREATED_OK_MSG);
+          this.selectedItems = [];
+          this.loadData();
+        }
+      });
+    }
+  
+    pageChanged(event: any): void {
+      this.pageIndex = event.page + 1;
+      this.pageSize = event.rows;
+      this.loadData();
+    }
+  
+    showEditModal() {
+      if (this.selectedItems.length == 0) {
+        this.notificationService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
+        return;
       }
-    });
-  }
-
-  pageChanged(event: any): void {
-    this.pageIndex = event.page + 1;
-    this.pageSize = event.rows;
-    this.loadData();
-  }
-
-  showEditModal() {
-    if (this.selectedItems.length == 0) {
-      this.notificationService.showError(
-        MessageConstants.NOT_CHOOSE_ANY_RECORD
-      );
-      return;
+      var id = this.selectedItems[0].questionId;
+      const ref = this.dialogService.open(QuestionDetailComponent, {
+        data: {
+          id: id
+        },
+        header: 'Cập nhật câu hỏi ',
+        width: '70%'
+      });
+      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
+      const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
+      dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
+      ref.onClose.subscribe((data: questionDTO) => {
+        if (data) {
+          this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+          this.selectedItems = [];
+          this.loadData(data.questionId);
+          
+        }
+      });
     }
-    var id = this.selectedItems[0].questionId;
-    const ref = this.dialogService.open(QuestionDetailComponent, {
-      data: {
-        id: id,
-      },
-      header: 'Cập nhật Question',
-      width: '70%',
-    });
-    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-    const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
-    const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
-    dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
-    ref.onClose.subscribe((data: questionDTO) => {
-      if (data) {
-        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
-        this.selectedItems = [];
-        this.loadData(data.questionId);
-        console.log(this.loadData(data.questionId));
+
+    deleteItems() {
+      if (this.selectedItems.length == 0) {
+        this.notificationService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
+        return;
       }
-    });
-  }
-
-  deleteItems() {
-    if (this.selectedItems.length == 0) {
-      this.notificationService.showError(
-        MessageConstants.NOT_CHOOSE_ANY_RECORD
-      );
-      return;
+      var ids:any = [];
+      this.selectedItems.forEach(element => {
+        ids.push(element.questionId);
+      });
+      this.confirmationService.confirm({
+        message: MessageConstants.CONFIRM_DELETE_MSG,
+        accept: () => {
+          this.deleteItemsConfirm(ids)
+        }
+      });
     }
-    var ids: any = [];
-    this.selectedItems.forEach((element) => {
-      ids.push(element.questionId);
-    });
-    this.confirmationService.confirm({
-      message: MessageConstants.CONFIRM_DELETE_MSG,
-      accept: () => {
-        this.deleteItemsConfirm(ids);
-      },
-    });
-  }
-
-  deleteItemsConfirm(ids: any[]) {
-    this.toggleBlockUI(true);
-
-    this.questionService.deleteQuestions(ids).subscribe({
-      next: () => {
-        this.notificationService.showSuccess(MessageConstants.DELETED_OK_MSG);
-        this.loadData();
-        this.selectedItems = [];
-        this.toggleBlockUI(false);
-      },
-      error: () => {
-        this.toggleBlockUI(false);
-      },
-    });
-  }
-  private toggleBlockUI(enabled: boolean) {
-    if (enabled == true) {
-      this.blockedPanel = true;
-    } else {
-      setTimeout(() => {
-        this.blockedPanel = false;
-      }, 1000);
+  
+    deleteItemsConfirm(ids: any[]) {
+      this.toggleBlockUI(true);
+  
+      this.questionService.deleteSeries(ids)
+        .subscribe({
+          next: () => {
+            this.notificationService.showSuccess(MessageConstants.DELETED_OK_MSG);
+            this.loadData();
+            this.selectedItems = [];
+            this.toggleBlockUI(false);
+          },
+          error: () => {
+            this.toggleBlockUI(false);
+          }
+        });
     }
-  }
+    private toggleBlockUI(enabled: boolean) {
+      if (enabled == true) {
+        this.blockedPanel = true;
+      }
+      else {
+        setTimeout(() => {
+          this.blockedPanel = false;
+        }, 1000);
+      }
+  
+    }
 }

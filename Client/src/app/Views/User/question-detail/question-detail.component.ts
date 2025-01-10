@@ -96,13 +96,11 @@ export class QuestionDetailComponent {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: (response: questionDTO) => {
-          console.log(response)
           this.selectedEntity = response;
           this.buildForm();
           this.toggleBlockUI(false);
         },
         error: () => {
-          console.log(1)
           this.toggleBlockUI(false);
         },
       });

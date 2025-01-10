@@ -157,7 +157,6 @@ export class ProfileComponent implements OnInit {
   }
 
   showEditModal(id:string) {
-    console.log(id)
     const ref = this.dialogService.open(PostDetailUpdateComponent, {
       data: {
         id: id
@@ -181,7 +180,6 @@ export class ProfileComponent implements OnInit {
       res.results.forEach((data) => {
         if (data.status === 3) {
           this.postPublic.push(data);
-          console.log("public",this.postPublic)
         } 
       });
     });
@@ -221,8 +219,6 @@ export class ProfileComponent implements OnInit {
     if (this.changePasswordForm.valid) {
       const passwordData = this.changePasswordForm.value;
       this.ProfileService.changePassword(passwordData).subscribe((res) => {});
-    } else {
-      console.log('Form is invalid');
     }
   }
 
@@ -259,7 +255,6 @@ export class ProfileComponent implements OnInit {
 
   // Hàm xử lý sự kiện khi chuyển tab
   onTabChange(event: any) {
-    console.log('Tab changed:', event);
   }
 
   approve(id: string) {
@@ -267,7 +262,6 @@ export class ProfileComponent implements OnInit {
     this.postService.approvePost(id).subscribe({
       next: (res) => {
         this.notificationService.showSuccess('Đăng bài thành công');
-        console.log(res);
       },
       error: (err) => {
         this.notificationService.showError('Đăng bài không thành thành công');

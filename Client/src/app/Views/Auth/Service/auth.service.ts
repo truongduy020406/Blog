@@ -1,51 +1,80 @@
-import { HttpClient} from '@angular/common/http';
-import { computed, inject, Injectable, InjectionToken, signal } from '@angular/core';
-import { loginModel } from '../Models/login.model'
+import { HttpClient } from '@angular/common/http';
+import {
+  computed,
+  inject,
+  Injectable,
+  InjectionToken,
+  signal,
+} from '@angular/core';
+import { loginModel } from '../Models/login.model';
 import { map, Observable } from 'rxjs';
 import { AuthenticatedResult } from '../../../Shared/Model/token.model';
 import { RegisterModel } from '../Models/Register.model';
-export const ADMIN_API_BASE_URL = new InjectionToken<string>('ADMIN_API_BASE_URL');
+export const ADMIN_API_BASE_URL = new InjectionToken<string>(
+  'ADMIN_API_BASE_URL'
+);
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private baseUrl  = inject(ADMIN_API_BASE_URL);
+  private baseUrl = inject(ADMIN_API_BASE_URL);
   currentUser = signal<any | null>(null);
   nameUser = computed(() => {
     return this.currentUser()?.fullName;
   });
 
-  login(body: loginModel):Observable<AuthenticatedResult> {
-    let url_ = this.baseUrl + "/api/admin/auth";
-    url_ = url_.replace(/[?&]$/, "");
+
+  login(body: loginModel): Observable<AuthenticatedResult> {
+    let url_ = this.baseUrl + '/api/admin/auth';
+    url_ = url_.replace(/[?&]$/, '');
     return this.http.post<AuthenticatedResult>(url_, body).pipe(
-      map((res:any)=> {
+      map((res: any) => {
         this.currentUser.set(res);
         return res;
       })
-    )
-    
+    );
   }
 
-  register(body: RegisterModel):Observable<AuthenticatedResult> {
-    let url_ = this.baseUrl + "/api/admin/auth/register"; 
-    url_ = url_.replace(/[?&]$/, "");
-   
-    return this.http.post<AuthenticatedResult>(url_, body)
-    
+  register(body: RegisterModel): Observable<AuthenticatedResult> {
+    let url_ = this.baseUrl + '/api/admin/auth/register';
+    url_ = url_.replace(/[?&]$/, '');
+
+    return this.http.post<AuthenticatedResult>(url_, body);
   }
 
-  getProfile(){
-    let url_ = this.baseUrl + "/profile";
+  getProfile() {
+    let url_ = this.baseUrl + '/profile';
     return this.http.get(url_).pipe(
-      map((user:any) => {
-        console.log(user)
+      map((user: any) => {
         this.currentUser.set(user);
         return user;
       })
-    )
+    );
   }
- 
+  logout() {
+    localStorage.removeItem('auth-refreshtoken');
+    localStorage.removeItem('auth-token');
+
+    localStorage.removeItem('auth-user');
+    this.currentUser.set(null);
+  }
+
+  getUserID(): string | null {
+    const token = localStorage.getItem('auth-user');
+    
+    if (token) {
+      try {
+        const userData = JSON.parse(token); // Parse chuỗi JSON thành đối tượng
+        return userData.userId; // Trả về userId nếu tồn tại
+      } catch (error) {
+        console.error('Error parsing token:', error);
+        return null; // Trả về null nếu token không hợp lệ
+      }
+    }
+  
+    return null; // Trả về null nếu không tìm thấy token
+  }
+  
 }

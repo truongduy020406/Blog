@@ -30,6 +30,16 @@ namespace Blog.Data.Repositorys
             return await _context.Likes.CountAsync(predicate);
         }
 
+        public async Task<Like> FindAsync(Expression<Func<Like, bool>> predicate)
+        {
+            return await _context.Likes.FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<Like> GetByUserIdAndPostIdAsync(Guid userId, Guid postId)
+        {
+            return await _context.Likes
+                .FirstOrDefaultAsync(like => like.AuthorUserId == userId && like.PostId == postId);
+        }
 
     }
 }

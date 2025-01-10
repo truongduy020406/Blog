@@ -60,10 +60,14 @@ namespace Blog.Data.Repositorys
         }
 
 
-        public Task UpdateAsync(CreateUpdateCommentDto comment)
+
+        public async Task UpdateAsync(Guid commentId, CreateUpdateCommentDto commentDto)
         {
-            throw new NotImplementedException();
+            var comment = await _context.Comments.FindAsync(commentId);
+            _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
         }
+
 
         private async Task<List<CommentDto>> GetRepliesAsync(Guid parentCommentId)
         {
