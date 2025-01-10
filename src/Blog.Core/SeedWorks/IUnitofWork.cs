@@ -14,6 +14,10 @@ namespace Blog.Core.SeedWorks
         IUserRepository Users { get; }
 
         IQuestionRepository Question { get; }
+
+        ICommentRepository Comment { get; }
+
+        ILikeRepository Like { get; }
         Task<int> CompleteAsync();
 
     }
