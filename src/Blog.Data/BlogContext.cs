@@ -26,6 +26,10 @@ namespace Blog.Data
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<Question> Questions { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
+using Blog.Core.Domain.Content;
 using Blog.Core.Domain.Identity;
 using Blog.Core.Repository;
 using Blog.Core.SeedWorks;
 using Blog.Data.Repositorys;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Blog.Core.SeedWorks.Constants.Permissions;
+
 
 namespace Blog.Data.SeedWorks
 {
@@ -27,7 +23,8 @@ namespace Blog.Data.SeedWorks
             Transactions = new TransactionRepository(context, mapper);
             Users = new UserRepository(context);
             Question = new QuestionRepository(context, mapper , userManager);
-
+            Comment = new CommentRepository(context, mapper, userManager);
+            Like = new LikeRepository(context, mapper, userManager);
 
         }
         public IPostRepository Posts { get; private set; }
@@ -40,6 +37,9 @@ namespace Blog.Data.SeedWorks
 
         public IQuestionRepository Question { get; private set; }
 
+        public ICommentRepository Comment { get; private set; }
+
+        public ILikeRepository Like { get; private set; }
 
         public async Task<int> CompleteAsync()
         {
